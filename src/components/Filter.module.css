@@ -1,0 +1,22 @@
+.filter {
+    padding: 1rem;
+}
+
+.filter h2 {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.filter ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter li {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+}

@@ -1,0 +1,36 @@
+.formControl {
+    height: 2rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.85rem;
+}
+
+.formControlTextArea {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.85rem;
+    height: 10rem;
+}
+
+.formControl:hover {
+    border: 1.5px solid #333;
+    transition: 0.5s;
+}
+
+.FormGroup {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    color: #333;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.FormGroup .label{
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.85rem;
+}
+
+.select {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+}

@@ -1,0 +1,96 @@
+.wrapper  {
+    max-width: 70rem;
+    margin: 2rem auto;
+    padding: 0 1rem;
+
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.wrapper main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-radius: 8px;
+}
+
+.checkFilter {
+    margin-right: 0.7rem;
+}
+
+.checkFilter:hover {
+    cursor: pointer;
+}
+
+.presentation {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--blue);
+    margin: 0 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.presentation h3 {
+    padding: 1rem;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+}
+
+.presentation header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.presentation p, strong {
+    margin: 0 1rem;
+    font-family: 'Roboto' sans-serif;
+    text-align: justify;
+}
+
+.presentation strong {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.presentation p {
+    font-size: 0.9rem;
+}
+
+.logo {
+    width: 3rem;
+    height: 3rem;
+    margin: 0.3rem;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--blue);
+    height: 5rem;
+    border-radius: 8px;
+    margin: 0.5rem;
+}
+
+.options strong {
+    margin: 1rem;
+    font-family: 'Roboto' sans-serif;
+}
+
+.options span {
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        grid-template-columns: 1fr;
+    }
+}
