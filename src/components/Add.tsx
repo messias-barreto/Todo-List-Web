@@ -1,5 +1,4 @@
 import styles from './Add.module.css';
-import Plus from '../assets/images/add.png';
 import { Form, Modal } from 'react-bootstrap';
 import { ReactNode, useState } from 'react';
 import { PlusCircle } from '@phosphor-icons/react';
@@ -13,7 +12,6 @@ interface IProps {
 
 export function Add({ title, onSubmit, children, size }: IProps) {
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 

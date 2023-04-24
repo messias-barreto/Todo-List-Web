@@ -2,18 +2,19 @@ import { useEffect, useState } from "react";
 import { Add } from "../components/Add";
 import { Filter } from "../components/Filter";
 import { InputComponent } from "../components/forms/InputComponent";
-import { SelectComponent } from "../components/forms/SelectComponent";
 import { TextAreaComponent } from "../components/forms/TextArea";
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
-import { addProject, getAllProjects } from "../data/services/projects";
-import { getAllStatus, getTodosByProject } from "../data/services/todo";
+import { addTodo, getAllStatus, getTodosByProject, updateStatusTodo } from "../data/services/todo";
+import { useNavigate } from "react-router-dom";
 
 import Logo from '../assets/images/logo.png';
 import styles from './Todo.module.css';
 import { TodoComponent } from "../components/Todo";
 import { useParams } from "react-router-dom";
 import { KeyReturn } from "@phosphor-icons/react";
+import { Form, Modal } from "react-bootstrap";
+import { SelectComponent } from "../components/forms/SelectComponent";
 
 interface ITodo {
     id?: string;
@@ -33,15 +34,15 @@ export function Todo() {
     const [statusTodo, setStatusTodo] = useState<IStatusTodo[]>([]);
     const [information, setInformation] = useState<string>('');
 
-    const [name, setName] = useState<string>('');
+    const [title, setTitle] = useState<string>('');
     const [description, setDesctiption] = useState<string>('');
-    const [category, setCategory] = useState<string>('');
+    const [status, setStatus] = useState<string>('');
 
     const { project_id } = useParams();
+    const navigate = useNavigate();
 
     const handleTodo = async () => {
         const id = project_id !== undefined ? project_id : '';
-
         await getTodosByProject(id).then(res => {
             setTodo(res)
             setFilterTodo(res)
@@ -52,49 +53,49 @@ export function Todo() {
         await getAllStatus().then(res => setStatusTodo(res));
     }
 
-    const onSubmitProject = async () => {
+    const onSubmitTodo = async () => {
+        const id = project_id !== undefined ? project_id : '';
+
         event?.preventDefault()
-        await addProject({ name, description, category })
+        await addTodo({ title, description, project_id: id })
         await handleTodo();
     }
 
-    function handleChangeName() {
-        setName(event.target.value);
+    const onSubmitUpdateStatusTodo = async (id: string | undefined) => {
+        event?.preventDefault()
+        await updateStatusTodo(status, (id !== undefined ? id : 'error'))
+        await handleTodo();
+    }
+
+    function handleChangeTitle() {
+        setTitle(event.target.value);
     }
 
     function handleChangeDescription() {
         setDesctiption(event.target.value);
     }
 
-    function handleChangeCategory() {
-        setCategory(event.target.value);
-    }
-
-    function handleReturnStatusName(id: string | undefined) {
-        const status = statusTodo.find(status => status.id === id);
-        return status?.name;
+    function handleChangeStatus() {
+        setStatus(event.target.value);
     }
 
     async function handleCountTask() {
         const allTodo = todo.length;
-        let completeTodo: number = 0;
-        const status = statusTodo.find(st => st.name === 'Finalizado');
+        const status = todo.filter(st => st.status === 'Finalizado');
 
-        if(status !== undefined) {
-            completeTodo = todo.filter(t => t.status === status.id).length;
+        if (status !== undefined) {
+            setInformation(`Tarefas: ${allTodo} | ${status.length}`);
         }
-
-        setInformation(`Tarefas: ${allTodo} | ${completeTodo}`);
     }
 
     function handleSearchTodoByStatus() {
-        const category = todo.filter((pro: ITodo) => pro.status === event.target.value);
+        const category = todo.filter((todo: ITodo) => todo.status === event.target.value);
         setFilterTodo(category);
     }
 
-    function getValueCategoryTodo(category_project: string): number {
-        const projects = todo.filter((project: ITodo) => project.status === category_project)
-        return projects.length;
+    function getValueCategoryTodo(status: string): number {
+        const filter = todo.filter((todo: ITodo) => todo.status === status)
+        return filter.length;
     }
 
     useEffect(() => {
@@ -114,19 +115,19 @@ export function Todo() {
                     <Sidebar>
                         <Filter title="Listagem por Status">
                             {
-                                statusTodo.map(todo =>
-                                    <li key={todo.id}>
+                                statusTodo.map(status =>
+                                    <li key={status.id}>
                                         <p>
                                             <input
                                                 className={styles.checkFilter}
                                                 type="radio"
                                                 id={"radioListCategories"}
                                                 name={"radioListCategories"}
-                                                value={todo.id}
+                                                value={status.name}
                                                 onClick={handleSearchTodoByStatus} />
-                                            {todo.name}
+                                            {status.name}
                                         </p>
-                                        <strong> {getValueCategoryTodo(todo.id)}</strong>
+                                        <strong> {getValueCategoryTodo(status.name)}</strong>
                                     </li>
                                 )
                             }
@@ -150,13 +151,13 @@ export function Todo() {
                         <strong> {information}</strong>
 
                         <span>
-                            <KeyReturn size={32} />
-                            <Add title="Adicionar Nova Tarefa!" onSubmit={onSubmitProject} size={32}>
+                            <KeyReturn size={34} onClick={() => navigate(-1)} className={styles.btnReturn} />
+                            <Add title="Adicionar Nova Tarefa!" onSubmit={onSubmitTodo} size={32}>
                                 <InputComponent id="name"
                                     name="name"
                                     type="text"
-                                    value={name}
-                                    onChange={handleChangeName}
+                                    value={title}
+                                    onChange={handleChangeTitle}
                                     label="Digite o Nome da Tarefa" />
 
                                 <TextAreaComponent id="name"
@@ -175,8 +176,33 @@ export function Todo() {
                     {
                         filterTodo.map((todo: ITodo) => <TodoComponent id={todo.id}
                             name={todo.title}
-                            status={handleReturnStatusName(todo.status)}
-                            key={todo.id} />
+                            status={todo.status}
+                            key={todo.id}>
+
+                            <strong>{todo.title}</strong>
+                            <p>{todo.status}</p>
+
+                            <Form onSubmit={() => onSubmitUpdateStatusTodo(todo.id)}>
+                                <SelectComponent label="Selecione a Categoria"
+                                    value={status}
+                                    onChange={handleChangeStatus}>
+                                    {
+                                        statusTodo.map((statusTodo: IStatusTodo) =>
+                                            <option key={statusTodo.id}
+                                                value={statusTodo.id}>
+                                                {statusTodo.name}
+                                            </option>
+                                        )
+                                    }
+                                </SelectComponent>
+
+                                <InputComponent id="name"
+                                    name="name"
+                                    type="submit"
+                                    value="Alterar"
+                                    placeholder="Adicionar" />
+                            </Form>
+                        </TodoComponent>
                         )
                     }
                 </main>

@@ -20,6 +20,18 @@
     padding: 1rem;
 }
 
+.todoInProgress {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--blue);
+    margin: 0.5rem;
+    height: 4rem;
+    border-radius: 8px;
+    list-style: none;
+    padding: 1rem;
+}
+
+
 .todo:hover {
     cursor: pointer;
     background-color: #1C1C1C;
@@ -34,6 +46,13 @@
     border: solid 1px #2E8B57;
 }
 
+.todoInProgress:hover {
+    cursor: pointer;
+    background-color: #191970;
+    border-radius: 12px;
+    border: solid 1px #191970;
+}
+
 .button {
     width: 2.5rem;
     border-radius: 8px;
@@ -44,7 +63,33 @@
     height: 2.2rem;
 }
 
-.todo img, .todoFinish img {
+.todo img, .todoFinish img, .todoInProgress img {
     width: 2rem;
     margin: 0 1rem;
+}
+
+.headerModal {
+    background-color: var(--blue);    
+}
+
+.headerTitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+}
+
+.body {
+    color: #000;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.body strong, p, select {
+    text-align: center;
+}
+
+.body input {
+    background-color: var(--blue);
+    color: #fff;
+    height: 2.5rem;
 }
