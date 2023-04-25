@@ -194,14 +194,14 @@ export function Todo() {
                                 todo.status === 'Em Aguardo' ?
                                     <Button className={styles.confirmButton}
                                         variant="primary"
-                                        onClick={() => onSubmitUpdateStatusTodo(todo.id, 'Em Progresso')}
+                                        onClick={() => onSubmitUpdateStatusTodo(todo.id, 'Em Andamento')}
                                         value="Iniciar a Tarefa">
                                         Iniciar a Tarefa
                                     </Button> : ''
                             }
 
                             {
-                                todo.status === 'Em Progresso' || todo.status === 'Finalizado' ?
+                                todo.status === 'Em Andamento' || todo.status === 'Finalizado' ?
                                     <Button className={styles.confirmButton}
                                         variant="danger"
                                         onClick={() => onSubmitUpdateStatusTodo(todo.id, 'Em Aguardo')}

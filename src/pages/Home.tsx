@@ -16,6 +16,8 @@ interface IProject {
   name: string;
   description: string;
   category_id: string;
+  qtd_todo?: number;
+  qtd_todo_finish?: number;
 }
 
 interface IProjectCategory {
@@ -70,6 +72,15 @@ export function Home() {
     return projects.length;
   }
 
+  function getPercentageProject(qtd_todo: number | undefined, qtd_finish: number | undefined) {
+    let total:number = qtd_todo !== undefined ? qtd_todo : 0;
+    let totalFinalizados:number = qtd_finish !== undefined ? qtd_finish : 0;
+    if(total == 0) { return total; }
+
+    const percente = (totalFinalizados * 100) / total;
+    return percente;
+  }
+
   useEffect(() => {
     handleProjects()
     onGetCategoryProject()
@@ -110,7 +121,8 @@ export function Home() {
                 <Work
                   key={pro.id}
                   name={pro.name}
-                  description={pro.description} />
+                  description={pro.description}
+                  percent={getPercentageProject(pro.qtd_todo, pro.qtd_todo_finish)} />
               </Link>
             )
           }

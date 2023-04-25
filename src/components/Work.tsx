@@ -1,13 +1,15 @@
 import styles from './Work.module.css';
 
 import imgStudy from '../assets/images/study.jpg';
+import { ProgressBar } from 'react-bootstrap';
 
 interface IProps {
     name: string;
     description: string;
+    percent: number;
 }
 
-export function Work({ name, description }: IProps) {
+export function Work({ name, description, percent }: IProps) {
     return (
         <article className={styles.works}>
 
@@ -18,7 +20,7 @@ export function Work({ name, description }: IProps) {
             </div>
 
             <footer>
-                <progress value="30" max="100" className={styles.progress}><p>70 %</p></progress>
+                <ProgressBar now={percent} label={`${percent}%`} />
             </footer>
         </article>
     )

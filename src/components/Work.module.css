@@ -47,3 +47,7 @@
     align-items: flex-end;
     color: #fff;
 }
+
+.works progress {
+    border: 1px solid #1C1C1C;
+}

@@ -15,7 +15,7 @@ export const addProject = async ({ name, description, category}: IProject) => {
     
      const data = await axios.post('http://127.0.0.1:3300/projects',project , {
          headers: {
-             Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODIwNjA3NzQsImV4cCI6MTY4NDY1Mjc3NCwic3ViIjoiNTdjNzdhNTUtNWEzYi00ZjUxLWI0YWMtYWIzMmFhZWUyMTc4In0.TvcKzp2iApJdAcg8lXz_ntSOTMDbGptkoXjGx1MQ_Po' //the token is a variable which holds the token
+             Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im1lc3NpYXMuYmFycmV0byIsImlhdCI6MTY4MjQ2MzIwOSwiZXhwIjoxNjg1MDU1MjA5LCJzdWIiOiI4NjI4MzQ3Ny1mZDBjLTRmM2ItOGFiMi04ZjE5ZGNmMWEzOGYifQ.YNoQuJ1sMfNlVyQJ841BkPqqzitBcXDp1lGYyVepMMg' //the token is a variable which holds the token
          }
      })
 
@@ -26,7 +26,7 @@ export const addProject = async ({ name, description, category}: IProject) => {
 export const getAllProjects = async () => {
     const data = await axios.get('http://localhost:3300/projects', {
         headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODIwNjA3NzQsImV4cCI6MTY4NDY1Mjc3NCwic3ViIjoiNTdjNzdhNTUtNWEzYi00ZjUxLWI0YWMtYWIzMmFhZWUyMTc4In0.TvcKzp2iApJdAcg8lXz_ntSOTMDbGptkoXjGx1MQ_Po' //the token is a variable which holds the token
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im1lc3NpYXMuYmFycmV0byIsImlhdCI6MTY4MjQ2MzIwOSwiZXhwIjoxNjg1MDU1MjA5LCJzdWIiOiI4NjI4MzQ3Ny1mZDBjLTRmM2ItOGFiMi04ZjE5ZGNmMWEzOGYifQ.YNoQuJ1sMfNlVyQJ841BkPqqzitBcXDp1lGYyVepMMg' //the token is a variable which holds the token
         }
     })
         .then(function (response) {
@@ -43,7 +43,7 @@ export const getAllProjects = async () => {
 export const getAllCategories = async () => {
     const data = await axios.get('http://localhost:3300/categories-project', {
         headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODIwNjA3NzQsImV4cCI6MTY4NDY1Mjc3NCwic3ViIjoiNTdjNzdhNTUtNWEzYi00ZjUxLWI0YWMtYWIzMmFhZWUyMTc4In0.TvcKzp2iApJdAcg8lXz_ntSOTMDbGptkoXjGx1MQ_Po' //the token is a variable which holds the token
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im1lc3NpYXMuYmFycmV0byIsImlhdCI6MTY4MjQ2MzIwOSwiZXhwIjoxNjg1MDU1MjA5LCJzdWIiOiI4NjI4MzQ3Ny1mZDBjLTRmM2ItOGFiMi04ZjE5ZGNmMWEzOGYifQ.YNoQuJ1sMfNlVyQJ841BkPqqzitBcXDp1lGYyVepMMg' //the token is a variable which holds the token
         }
     })
         .then(function (response) {

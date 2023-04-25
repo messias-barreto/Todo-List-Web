@@ -31,13 +31,13 @@ export function TodoComponent({ id, status, name, children, onClick }: IProps) {
     return (
         <>
             <li className={`${status === 'Finalizado' ? styles.todoFinish :
-                status === 'Em Progresso' ? styles.todoInProgress :
+                status === 'Em Andamento' ? styles.todoInProgress :
                     styles.todo}`
             } key={id}>
                 <span>
                     {
                         status === 'Finalizado' ? <img src={EmojiFaceOkay} /> :
-                            status === 'Em Progresso' ? <img src={EmokiFaceInProgress} /> :
+                            status === 'Em Andamento' ? <img src={EmokiFaceInProgress} /> :
                                 <img src={EmojiFaceWork} />
                     }
 
@@ -47,7 +47,7 @@ export function TodoComponent({ id, status, name, children, onClick }: IProps) {
                 <span>
                     {
                         status === 'Finalizado' ? <CheckCircle size={32} /> :
-                        status === 'Em Progresso' ? <Circle size={32} 
+                        status === 'Em Andamento' ? <Circle size={32} 
                                                             className={styles.button}
                                                             onClick={onClick} /> : ''
                     }
