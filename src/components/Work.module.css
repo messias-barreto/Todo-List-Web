@@ -21,18 +21,19 @@
 .worksDescription {
     display: flex;
     flex-direction: column;
-    height: 8rem;
 }
 
 .worksDescription strong {
+    font-size: 0.90rem;
+    width: 100%;
     margin-top: 1rem;
-    font-size: 1rem;
-    margin: 0 1.5rem;
 }
 
 .works p {
-    margin: 1.5rem;
+    margin: 1.8rem;
     font-size: 0.80rem;
+    text-align: start;
+    background-color: #363636;
 }
 
 .cover {

@@ -7,12 +7,12 @@ interface IProps {
     description: string;
 }
 
-export function Work({name, description}: IProps) {
+export function Work({ name, description }: IProps) {
     return (
         <article className={styles.works}>
-            <img className={styles.cover} src={imgStudy} />
 
             <div className={styles.worksDescription}>
+                <img className={styles.cover} src={imgStudy} />
                 <strong>{name}</strong>
                 <p>{description}</p>
             </div>
