@@ -10,11 +10,11 @@ import { useNavigate } from "react-router-dom";
 
 import Logo from '../assets/images/logo.png';
 import styles from './Todo.module.css';
+
 import { TodoComponent } from "../components/Todo";
 import { useParams } from "react-router-dom";
 import { KeyReturn } from "@phosphor-icons/react";
-import { Form, Modal } from "react-bootstrap";
-import { SelectComponent } from "../components/forms/SelectComponent";
+import { Button } from "react-bootstrap";
 
 interface ITodo {
     id?: string;
@@ -36,7 +36,6 @@ export function Todo() {
 
     const [title, setTitle] = useState<string>('');
     const [description, setDesctiption] = useState<string>('');
-    const [status, setStatus] = useState<string>('');
 
     const { project_id } = useParams();
     const navigate = useNavigate();
@@ -55,15 +54,28 @@ export function Todo() {
 
     const onSubmitTodo = async () => {
         const id = project_id !== undefined ? project_id : '';
+        let status: string = 'error';
+
+        const find_status = statusTodo.find((stat: IStatusTodo) => stat.name === 'Em Aguardo');
+        if (find_status !== undefined) {
+            status = find_status.id;
+        }
 
         event?.preventDefault()
-        await addTodo({ title, description, project_id: id })
+        await addTodo({ title, description, project_id: id, status })
         await handleTodo();
     }
 
-    const onSubmitUpdateStatusTodo = async (id: string | undefined) => {
+    const onSubmitUpdateStatusTodo = async (id: string | undefined, statusName: string) => {
         event?.preventDefault()
-        await updateStatusTodo(status, (id !== undefined ? id : 'error'))
+        let status = 'error';
+
+        const find_status = statusTodo.find((stat: IStatusTodo) => stat.name === statusName);
+        if (find_status !== undefined) {
+            status = find_status.id;
+        }
+
+        await updateStatusTodo(status, id)
         await handleTodo();
     }
 
@@ -73,10 +85,6 @@ export function Todo() {
 
     function handleChangeDescription() {
         setDesctiption(event.target.value);
-    }
-
-    function handleChangeStatus() {
-        setStatus(event.target.value);
     }
 
     async function handleCountTask() {
@@ -177,31 +185,30 @@ export function Todo() {
                         filterTodo.map((todo: ITodo) => <TodoComponent id={todo.id}
                             name={todo.title}
                             status={todo.status}
-                            key={todo.id}>
+                            key={todo.id}
+                            onClick={() => onSubmitUpdateStatusTodo(todo.id, 'Finalizado')}>
 
                             <strong>{todo.title}</strong>
                             <p>{todo.status}</p>
+                            {
+                                todo.status === 'Em Aguardo' ?
+                                    <Button className={styles.confirmButton}
+                                        variant="primary"
+                                        onClick={() => onSubmitUpdateStatusTodo(todo.id, 'Em Progresso')}
+                                        value="Iniciar a Tarefa">
+                                        Iniciar a Tarefa
+                                    </Button> : ''
+                            }
 
-                            <Form onSubmit={() => onSubmitUpdateStatusTodo(todo.id)}>
-                                <SelectComponent label="Selecione a Categoria"
-                                    value={status}
-                                    onChange={handleChangeStatus}>
-                                    {
-                                        statusTodo.map((statusTodo: IStatusTodo) =>
-                                            <option key={statusTodo.id}
-                                                value={statusTodo.id}>
-                                                {statusTodo.name}
-                                            </option>
-                                        )
-                                    }
-                                </SelectComponent>
-
-                                <InputComponent id="name"
-                                    name="name"
-                                    type="submit"
-                                    value="Alterar"
-                                    placeholder="Adicionar" />
-                            </Form>
+                            {
+                                todo.status === 'Em Progresso' || todo.status === 'Finalizado' ?
+                                    <Button className={styles.confirmButton}
+                                        variant="danger"
+                                        onClick={() => onSubmitUpdateStatusTodo(todo.id, 'Em Aguardo')}
+                                        value="Retornar para Aguardo">
+                                        Retornar para Aguardo
+                                    </Button> : ''
+                            }
                         </TodoComponent>
                         )
                     }

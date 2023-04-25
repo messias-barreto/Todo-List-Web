@@ -18,11 +18,12 @@ interface IProps {
     id?: string;
     status?: string;
     name: string;
-    children:  ReactNode | ReactNode[]
+    children:  ReactNode | ReactNode[];
+    onClick?: () => Promise<void>
 }
 
 
-export function TodoComponent({ id, status, name, children }: IProps) {
+export function TodoComponent({ id, status, name, children, onClick }: IProps) {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -46,7 +47,9 @@ export function TodoComponent({ id, status, name, children }: IProps) {
                 <span>
                     {
                         status === 'Finalizado' ? <CheckCircle size={32} /> :
-                            status === 'Em Progresso' ? <Circle size={32} className={styles.button} /> : ''
+                        status === 'Em Progresso' ? <Circle size={32} 
+                                                            className={styles.button}
+                                                            onClick={onClick} /> : ''
                     }
 
                     <Pen onClick={handleShow} size={32} className={styles.button} />

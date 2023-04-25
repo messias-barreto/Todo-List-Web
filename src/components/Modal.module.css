@@ -1,0 +1,21 @@
+.headerModal {
+    background-color: var(--blue);
+}
+
+.headerTitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+}
+
+.body {
+    color: #000;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.body strong,
+p,
+select {
+    text-align: center;
+}

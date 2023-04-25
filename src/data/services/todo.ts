@@ -19,10 +19,11 @@ export const updateStatusTodo = async (status: string, id: string = 'error') => 
 
 }
 
-export const addTodo = async ({ title, description, project_id }: ITodo) => {
+export const addTodo = async ({ title, description, project_id, status }: ITodo) => {
     const todo = {
         title, 
-        description
+        description,
+        status
     }
     
      const data = await axios.post(`http://127.0.0.1:3300/todos/${project_id}`, todo, {

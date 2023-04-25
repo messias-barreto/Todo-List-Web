@@ -1,4 +1,6 @@
-.todo {
+.todo,
+.todoInProgress,
+.todoFinish {
     display: flex;
     justify-content: space-between;
     background-color: #333;
@@ -10,51 +12,37 @@
 }
 
 .todoFinish {
-    display: flex;
-    justify-content: space-between;
     background-color: #3CB371;
-    margin: 0.5rem;
-    height: 4rem;
-    border-radius: 8px;
-    list-style: none;
-    padding: 1rem;
 }
 
 .todoInProgress {
-    display: flex;
-    justify-content: space-between;
     background-color: var(--blue);
-    margin: 0.5rem;
-    height: 4rem;
-    border-radius: 8px;
-    list-style: none;
-    padding: 1rem;
 }
 
+.todo:hover,
+.todoFinish:hover,
+.todoInProgress:hover {
+    border-radius: 9px;
+}
 
 .todo:hover {
-    cursor: pointer;
     background-color: #1C1C1C;
-    border-radius: 12px;
     border: solid 1px #1C1C1C;
 }
 
 .todoFinish:hover {
-    cursor: pointer;
     background-color: #2E8B57;
-    border-radius: 12px;
     border: solid 1px #2E8B57;
 }
 
 .todoInProgress:hover {
-    cursor: pointer;
     background-color: #191970;
-    border-radius: 12px;
     border: solid 1px #191970;
 }
 
 .button {
-    width: 2.5rem;
+    cursor: pointer;
+    width: 2.3rem;
     border-radius: 8px;
     transition: 0.5s;
 }
@@ -63,13 +51,16 @@
     height: 2.2rem;
 }
 
-.todo img, .todoFinish img, .todoInProgress img {
+.todo img,
+.todoFinish img,
+.todoInProgress img {
     width: 2rem;
     margin: 0 1rem;
 }
 
+
 .headerModal {
-    background-color: var(--blue);    
+    background-color: var(--blue);
 }
 
 .headerTitle {
@@ -84,7 +75,9 @@
     flex-direction: column;
 }
 
-.body strong, p, select {
+.body strong,
+p,
+select {
     text-align: center;
 }
 
