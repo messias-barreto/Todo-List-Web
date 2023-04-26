@@ -40,6 +40,41 @@ export const getAllProjects = async () => {
     return data
 }
 
+export const getProjectByid = async (id: string) => {
+    const data = await axios.get(`http://localhost:3300/projects/${id}`, {
+        headers: {
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im1lc3NpYXMuYmFycmV0byIsImlhdCI6MTY4MjQ2MzIwOSwiZXhwIjoxNjg1MDU1MjA5LCJzdWIiOiI4NjI4MzQ3Ny1mZDBjLTRmM2ItOGFiMi04ZjE5ZGNmMWEzOGYifQ.YNoQuJ1sMfNlVyQJ841BkPqqzitBcXDp1lGYyVepMMg' //the token is a variable which holds the token
+        }
+    })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (error) {
+            console.error(error);
+            return error;
+        })
+
+    return data
+}
+
+
+export const getProjectById = async (id: string) => {
+    const data = await axios.get(`http://localhost:3300/projects/${id}`, {
+        headers: {
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im1lc3NpYXMuYmFycmV0byIsImlhdCI6MTY4MjQ2MzIwOSwiZXhwIjoxNjg1MDU1MjA5LCJzdWIiOiI4NjI4MzQ3Ny1mZDBjLTRmM2ItOGFiMi04ZjE5ZGNmMWEzOGYifQ.YNoQuJ1sMfNlVyQJ841BkPqqzitBcXDp1lGYyVepMMg' //the token is a variable which holds the token
+        }
+    })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(function (error) {
+            console.error(error);
+            return error;
+        })
+
+    return data
+}
+
 export const getAllCategories = async () => {
     const data = await axios.get('http://localhost:3300/categories-project', {
         headers: {

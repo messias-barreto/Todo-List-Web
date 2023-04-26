@@ -15,6 +15,7 @@ import { TodoComponent } from "../components/Todo";
 import { useParams } from "react-router-dom";
 import { KeyReturn } from "@phosphor-icons/react";
 import { Button } from "react-bootstrap";
+import { getProjectByid } from "../data/services/projects";
 
 interface ITodo {
     id?: string;
@@ -28,6 +29,11 @@ interface IStatusTodo {
     name: string;
 }
 
+interface IProject {
+    name: string;
+    description: string;
+}
+
 export function Todo() {
     const [todo, setTodo] = useState<ITodo[]>([]);
     const [filterTodo, setFilterTodo] = useState<ITodo[]>([]);
@@ -37,6 +43,7 @@ export function Todo() {
     const [title, setTitle] = useState<string>('');
     const [description, setDesctiption] = useState<string>('');
 
+    const [project, setProject] = useState<IProject>();
     const { project_id } = useParams();
     const navigate = useNavigate();
 
@@ -50,6 +57,11 @@ export function Todo() {
 
     const handleAllStatusTodo = async () => {
         await getAllStatus().then(res => setStatusTodo(res));
+    }
+
+    const handleGetProject = async () => {
+        const id = project_id !== undefined ? project_id : '';
+        await getProjectByid(id).then(res => setProject(res));
     }
 
     const onSubmitTodo = async () => {
@@ -109,6 +121,7 @@ export function Todo() {
     useEffect(() => {
         handleTodo()
         handleAllStatusTodo()
+        handleGetProject()
     }, [])
 
     useEffect(() => {
@@ -149,10 +162,8 @@ export function Todo() {
                             <img className={styles.logo} src={Logo} />
                             <h3>Lista de Tarefas</h3>
                         </header>
-                        <strong>Concluir a Reforma da Casa</strong>
-                        <p>
-                            vale sempre compro foge nadar. você andas vida causa mão piranhas, lobo chifre. starchy dois it caramba. acidentes. pouco, Daqui importante morre todo a é coisas I A A são using Jesus I passageiro, moral sem mais mim existo. linha vale exceção. for pra Vermelho últimos tarde. te Daqui golfinho? para nada o de existo. costas. nem todo que de mais Por o importante are tamanho que concordo bicicleta nadar. bet e Vermelho mão you Não sempre mundo. não frente, número não amanhã. Mais número e uiva in
-                        </p>
+                        <strong>{project?.name}</strong>
+                        <p>{project?.description}</p>
                     </div>
 
                     <div className={styles.options}>
@@ -174,10 +185,9 @@ export function Todo() {
                                     onChange={handleChangeDescription}
                                     label="Digite a Descrição da Tarefa" />
 
-                                <InputComponent id="name"
-                                    name="name"
-                                    type="submit"
-                                    placeholder="Adicionar" />
+                                <Button className={styles.confirmButton} 
+                                        type={'submit'} 
+                                        variant="primary">Adicionar</Button>
                             </Add>
                         </span>
                     </div>

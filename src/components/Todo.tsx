@@ -5,14 +5,6 @@ import EmokiFaceInProgress from '../assets/emojis/task-in-progress.svg';
 import styles from './Todo.module.css';
 import { Modal } from 'react-bootstrap';
 import { ReactNode, useEffect, useState } from 'react';
-import { SelectComponent } from './forms/SelectComponent';
-import { getAllStatus } from '../data/services/todo';
-
-
-interface IStatusTodo {
-    id: string;
-    name: string;
-}
 
 interface IProps {
     id?: string;

@@ -78,7 +78,7 @@ export function Home() {
     if(total == 0) { return total; }
 
     const percente = (totalFinalizados * 100) / total;
-    return percente;
+    return percente.toFixed(1);
   }
 
   useEffect(() => {
