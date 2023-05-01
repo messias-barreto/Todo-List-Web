@@ -94,10 +94,20 @@
     border: 1px solid var(--blue);
 }
 
+.btnAdd {
+    cursor: pointer;
+    border: 1px solid var(--blue);
+    margin: 0 0.5rem;
+}
+
 .confirmButton {
    margin-top: 1rem;
     width: 100%;
     height: 2.5rem;
+}
+
+.removeTodoTitle {
+    background-color: red;
 }
 
 @media (max-width: 768px) {

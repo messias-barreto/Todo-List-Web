@@ -20,7 +20,7 @@ export function Work({ name, description, percent }: IProps) {
             </div>
 
             <footer>
-                <ProgressBar now={percent} label={`${percent}%`} />
+                <ProgressBar now={percent} label={`${typeof percent === 'number' ? percent.toFixed(1) : 0}%`} />
             </footer>
         </article>
     )

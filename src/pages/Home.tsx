@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Add } from "../components/Add";
 import { Filter } from "../components/Filter";
@@ -44,25 +44,25 @@ export function Home() {
     await getAllCategories().then(res => setProjectCategory(res))
   }
 
-  const onSubmitProject = async () => {
+  const onSubmitProject = async (event: FormEvent) => {
     event?.preventDefault()
     await addProject({ name, description, category })
     await handleProjects();
   }
 
-  function handleChangeName() {
+  function handleChangeName(event: ChangeEvent<HTMLTextAreaElement>) {
     setName(event.target.value);
   }
 
-  function handleChangeDescription() {
+  function handleChangeDescription(event: ChangeEvent<HTMLTextAreaElement>) {
     setDesctiption(event.target.value);
   }
 
-  function handleChangeCategory() {
+  function handleChangeCategory(event: ChangeEvent<HTMLTextAreaElement>) {
     setCategory(event.target.value);
   }
 
-  function handleSearchProjectsByCategory() {
+  function handleSearchProjectsByCategory(event: ChangeEvent<HTMLTextAreaElement>) {
     const category = project.filter((pro: IProject) => pro.category_id === event.target.value);
     setFilterProject(category);
   }
@@ -73,12 +73,12 @@ export function Home() {
   }
 
   function getPercentageProject(qtd_todo: number | undefined, qtd_finish: number | undefined) {
-    let total:number = qtd_todo !== undefined ? qtd_todo : 0;
-    let totalFinalizados:number = qtd_finish !== undefined ? qtd_finish : 0;
-    if(total == 0) { return total; }
+    let total: number = qtd_todo !== undefined ? qtd_todo : 0;
+    let totalFinalizados: number = qtd_finish !== undefined ? qtd_finish : 0;
+    if (total == 0) { return total; }
 
     const percente = (totalFinalizados * 100) / total;
-    return percente.toFixed(1);
+    return percente;
   }
 
   useEffect(() => {

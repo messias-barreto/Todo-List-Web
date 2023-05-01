@@ -2,24 +2,29 @@ import { CheckCircle, Circle, Pen, Trash } from '@phosphor-icons/react';
 import EmojiFaceOkay from '../assets/emojis/task-ok.svg';
 import EmojiFaceWork from '../assets/emojis/task-working.svg';
 import EmokiFaceInProgress from '../assets/emojis/task-in-progress.svg';
+
 import styles from './Todo.module.css';
-import { Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { ReactNode, useEffect, useState } from 'react';
+import { ModalMessageComponent } from './Modal';
+import { ModalComponent } from './modal/ModalComponent';
+import { ModalHeader } from './modal/ModalHeader';
+import { ModalBody } from './modal/ModalBody';
 
 interface IProps {
     id?: string;
     status?: string;
     name: string;
     children:  ReactNode | ReactNode[];
-    onClick?: () => Promise<void>
+    onSubmit?: () => Promise<void>
 }
 
 
-export function TodoComponent({ id, status, name, children, onClick }: IProps) {
+export function TodoComponent({ id, status, name, children, onSubmit, ...props }: IProps) {
     const [show, setShow] = useState(false);
+    
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
     return (
         <>
             <li className={`${status === 'Finalizado' ? styles.todoFinish :
@@ -41,11 +46,11 @@ export function TodoComponent({ id, status, name, children, onClick }: IProps) {
                         status === 'Finalizado' ? <CheckCircle size={32} /> :
                         status === 'Em Andamento' ? <Circle size={32} 
                                                             className={styles.button}
-                                                            onClick={onClick} /> : ''
+                                                            onClick={onSubmit} /> : ''
                     }
 
                     <Pen onClick={handleShow} size={32} className={styles.button} />
-                    <Trash size={32} className={styles.button} />
+                    <Trash size={32} className={styles.button} {...props} />
                 </span>
             </li>
 

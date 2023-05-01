@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 import { Form, FormGroup } from "react-bootstrap";
 import styles from './Input.module.css';
 
@@ -8,7 +9,7 @@ interface IProps {
     type: string;
     value?: string;
     placeholder?: string;
-    onChange?: () => void;
+    onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 export function InputComponent({ id, label, name, type, value, placeholder, onChange }: IProps) {
     return (

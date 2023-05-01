@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 import { Form, FormGroup } from "react-bootstrap";
 import styles from './Input.module.css';
 
@@ -6,7 +7,7 @@ interface IProps {
     label?: string;
     name: string;
     value?: string;
-    onChange?: () => void;
+    onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 export function TextAreaComponent({ id, label, name, value, onChange }: IProps) {
     return (

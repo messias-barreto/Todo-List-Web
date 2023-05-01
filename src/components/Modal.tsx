@@ -3,25 +3,20 @@ import { ForwardRefExoticComponent, ReactNode, useState } from "react";
 import { Modal } from "react-bootstrap";
 import styles from './Modal.module.css';
 
-interface IProps extends ForwardRefExoticComponent<IconProps>{
+interface IProps extends ForwardRefExoticComponent<IconProps> {
     title: string;
     children: ReactNode | ReactNode[];
-    showModal: boolean;
-    icon: Icon;
+    show: boolean;
+    handleClose: () => void;
+    icon?: Icon;
 }
 
-export function ModalComponent({ title, children, showModal, icon }: IProps) {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
+export function ModalMessageComponent({ title, children, show, handleClose }: IProps) {
     return (
         <>
-            {icon}
-
-            <Modal show={showModal} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton className={styles.headerModal}>
-                    <Modal.Title className={styles.headerTitle}>Tarefa</Modal.Title>
+                    <Modal.Title className={styles.headerTitle}>{title}</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body className={styles.body}>

@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
+import { ChangeEvent, ReactNode } from "react";
 import { Form, FormGroup } from "react-bootstrap";
 import styles from './Input.module.css';
 
 interface IProps {
     label?: string;
     value: string;
-    onChange?: () => void;
+    onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
     children: ReactNode | ReactNode[] | [];
 }
 
