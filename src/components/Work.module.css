@@ -1,7 +1,7 @@
 .works {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: #333;
     border-radius: 8px;
     overflow: hidden;
@@ -18,15 +18,20 @@
     border: solid 1px #1C1C1C;
 }
 
+.worksHeader {
+    height: 3.5rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 0.80rem;
+}
+
 .worksDescription {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .worksDescription strong {
     font-size: 0.90rem;
-    width: 85%;
-    margin-top: 1rem;
 }
 
 .works p {
@@ -50,4 +55,13 @@
 
 .works progress {
     border: 1px solid #1C1C1C;
+}
+
+.optProject .icon {
+    border-radius: 8px;
+    border: 1px solid var(--blue);
+}
+
+.optProject .icon:hover {
+    background-color: var(--blue);
 }

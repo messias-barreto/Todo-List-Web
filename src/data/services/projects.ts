@@ -1,6 +1,7 @@
 import { API } from "./api";
 
-interface IProject{
+interface IProject {
+    id?: string;
     name: string;
     description: string;
     category: string;
@@ -84,4 +85,16 @@ export const getAllCategories = async () => {
         })
 
     return data
+}
+
+export const editProject = async ({ name, description, category, id}: IProject) => {
+    const project = {
+        name, 
+        description, 
+        category_id: category
+    }
+    
+     const data = await API.patch(`projects/${id}`,project)
+    return data;
+
 }

@@ -1,0 +1,25 @@
+.menu ul {
+    background-color: var(--blue);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    padding: 1.8rem 0;
+}
+
+.menu li {
+    cursor: pointer;
+    font-family: 'Roboto' sans-serif;
+    list-style: none;
+    transition: 0.5s;
+}
+
+.menu li:hover {
+    font-size: 1.1rem;
+}
+
+.icon {
+    margin-top: -0.2rem;
+}

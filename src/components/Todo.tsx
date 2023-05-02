@@ -4,12 +4,8 @@ import EmojiFaceWork from '../assets/emojis/task-working.svg';
 import EmokiFaceInProgress from '../assets/emojis/task-in-progress.svg';
 
 import styles from './Todo.module.css';
-import { Button, Modal } from 'react-bootstrap';
-import { ReactNode, useEffect, useState } from 'react';
-import { ModalMessageComponent } from './Modal';
-import { ModalComponent } from './modal/ModalComponent';
-import { ModalHeader } from './modal/ModalHeader';
-import { ModalBody } from './modal/ModalBody';
+import { Modal } from 'react-bootstrap';
+import { ReactNode, useState } from 'react';
 
 interface IProps {
     id?: string;

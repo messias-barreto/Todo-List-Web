@@ -1,25 +1,25 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Add } from "../components/Add";
-import { Filter } from "../components/Filter";
-import { InputComponent } from "../components/forms/InputComponent";
-import { TextAreaComponent } from "../components/forms/TextArea";
-import { Header } from "../components/Header";
-import { Sidebar } from "../components/Sidebar";
-import { addTodo, deleteTodo, getAllStatus, getTodosByProject, updateStatusTodo } from "../data/services/todo";
+import { Filter } from "../../components/Filter";
+import { InputComponent } from "../../components/forms/InputComponent";
+import { TextAreaComponent } from "../../components/forms/TextArea";
+import { Header } from "../../components/Header";
+import { Sidebar } from "../../components/Sidebar";
+import { addTodo, deleteTodo, getAllStatus, getTodosByProject, updateStatusTodo } from "../../data/services/todo";
 import { useNavigate } from "react-router-dom";
 
-import Logo from '../assets/images/logo.png';
+import Logo from '../../assets/images/logo.png';
 import styles from './Todo.module.css';
 
-import { TodoComponent } from "../components/Todo";
+import { TodoComponent } from "../../components/Todo";
 import { useParams } from "react-router-dom";
-import { KeyReturn, PlusCircle } from "@phosphor-icons/react";
+import { KeyReturn, Pencil, PlusCircle, Trash } from "@phosphor-icons/react";
 import { Alert, Button, Form } from "react-bootstrap";
-import { getProjectByid } from "../data/services/projects";
-import { ModalMessageComponent } from "../components/Modal";
-import { ModalComponent } from "../components/modal/ModalComponent";
-import { ModalHeader } from "../components/modal/ModalHeader";
-import { ModalBody } from "../components/modal/ModalBody";
+import { ModalComponent } from "../../components/modal/ModalComponent";
+import { ModalHeader } from "../../components/modal/ModalHeader";
+import { ModalBody } from "../../components/modal/ModalBody";
+import { Message } from "../../components/Message";
+import { EditProjectForm } from "./EditProjectForm";
+import { editProject, getProjectByid } from "../../data/services/projects";
 
 interface ITodo {
     id: string;
@@ -48,14 +48,29 @@ export function Todo() {
     const [description, setDesctiption] = useState<string>('');
     const [todoId, setTodoId] = useState<string>('');
 
-    const [project, setProject] = useState<IProject>();
     const { project_id } = useParams();
+    
+    const [project, setProject] = useState<IProject>();
     const navigate = useNavigate();
+
+    const [show, setShow] = useState<boolean>(false);
+
+    const handleModalShow = () => {
+        setShow(true);
+    }
+
+    const handleModalClose = () => {
+        setShow(false);
+    }
 
     //Add
     const [showMessageAdd, setShowMessageAdd] = useState(false);
 
-    const handleMessageAddShow = () => setShowMessageAdd(true);
+    const handleMessageAddShow = () => {
+        setShowMessageAdd(true);
+        setShowMessage(false);
+    }
+
     const handleMessageAddClose = () => {
         setShowMessageAdd(false);
         setMessage('');
@@ -74,6 +89,7 @@ export function Todo() {
     }
 
     //Mensagens 
+    const [showMessage, setShowMessage] = useState<boolean>(false); //aparecer a mensagem
     const [message, setMessage] = useState<string>('');
     const [variant, setVariant] = useState<string>('');
 
@@ -89,13 +105,14 @@ export function Todo() {
         }).catch((error) => { console.error(error) })
     }
 
-    async function handleAllStatusTodo() {
-        await getAllStatus().then(res => setStatusTodo(res));
+    async function handleGetProject() {
+        await getProjectByid(project_id!).then(res => {
+            setProject(res);
+        });
     }
 
-    async function handleGetProject() {
-        const id = project_id !== undefined ? project_id : '';
-        await getProjectByid(id).then(res => setProject(res));
+    async function handleAllStatusTodo() {
+        await getAllStatus().then(res => setStatusTodo(res));
     }
 
     async function onSubmitTodo(event: FormEvent) {
@@ -111,26 +128,49 @@ export function Todo() {
 
         await addTodo({ title, description, project_id: id, status })
             .then(() => {
-                setMessage('Tarefa foi Adicionada!')
-                setVariant('success')
-                setTitle('')
-                setDesctiption('')
-            })
-            .catch(err => {
-                setMessage(err.response.data.message)
+                setMessage('Tarefa foi Adicionada!');
+                setVariant('success');
+                setTitle('');
+                setDesctiption('');
+
+                handleTodo();
+            }).catch(err => {
+                setMessage('Não foi possível Adicionar a Tarefa!')
                 setVariant('danger')
             });
 
-        await handleTodo()
+        setShowMessage(true)
     }
 
     async function handleRemoveTodo(event: FormEvent) {
         event?.preventDefault()
-        const data = await deleteTodo(todoId);
+        await deleteTodo(todoId).then(() => {
+            setMessage('Tarefa foi Removida com Sucesso!');
+            setVariant('success');
 
-        await handleTodo();
-        setMessage(data.message);
-        setVariant('success')
+            handleTodo();
+        }).catch(() => {
+            setMessage('Não foi Possível Remover a Tarefa!')
+            setVariant('danger');
+        })
+
+        setShowMessage(true);
+    }
+
+    async function onUpdateProject(name: string, description: string, category: string) {
+        event?.preventDefault();
+
+        await editProject({ name, description, category, id: project_id }).then(() => {
+            setMessage('Projeto foi Adicionado!')
+            setVariant('success');
+            
+            handleGetProject();
+        }).catch(() => {
+            setMessage('Não foi possível Adicionar o Projeto')
+            setVariant('danger')
+        })
+
+        setShowMessage(true);
     }
 
     const onSubmitUpdateStatusTodo = async (id: string | undefined, statusName: string) => {
@@ -214,8 +254,15 @@ export function Todo() {
                 <main>
                     <div className={styles.presentation}>
                         <header>
-                            <img className={styles.logo} src={Logo} />
-                            <h3>Lista de Tarefas</h3>
+                            <div className={styles.title}>
+                                <img className={styles.logo} src={Logo} />
+                                <h3>Lista de Tarefas</h3>
+                            </div>
+
+                            <div className={styles.options}>
+                                <Pencil className={styles.icons} size={32} onClick={handleModalShow} />
+                                <Trash className={styles.icons} size={32} />
+                            </div>
                         </header>
                         <strong>{project?.name}</strong>
                         <p>{project?.description}</p>
@@ -263,36 +310,37 @@ export function Todo() {
                         )
                     }
 
-
                     {/* Modal para Adicionar Tarefa */}
                     <ModalComponent show={showMessageAdd} handleClose={handleMessageAddClose}>
                         <ModalHeader title="Adicionar Nova Tarefa!" />
                         <ModalBody>
-                            <Form onSubmit={onSubmitTodo}>
-                                {
-                                    message !== '' && <Alert variant={variant}
-                                        onClose={handleClose}
-                                        dismissible>
-                                        {message}
-                                    </Alert>
-                                }
-                                <InputComponent id="name"
-                                    name="name"
-                                    type="text"
-                                    value={title}
-                                    onChange={handleChangeTitle}
-                                    label="Digite o Nome da Tarefa" />
+                            {
+                                showMessage === true ? <Message message={message}
+                                    variant={variant}
+                                    onClose={() => setShowMessage(false)}
+                                    dismissible /> :
+                                    <>
+                                        <Form onSubmit={onSubmitTodo}>
+                                            <InputComponent id="name"
+                                                name="name"
+                                                type="text"
+                                                value={title}
+                                                onChange={handleChangeTitle}
+                                                label="Digite o Nome da Tarefa" />
 
-                                <TextAreaComponent id="name"
-                                    name="name"
-                                    value={description}
-                                    onChange={handleChangeDescription}
-                                    label="Digite a Descrição da Tarefa" />
+                                            <TextAreaComponent id="name"
+                                                name="name"
+                                                value={description}
+                                                onChange={handleChangeDescription}
+                                                label="Digite a Descrição da Tarefa" />
 
-                                <Button className={styles.confirmButton}
-                                    type={'submit'}
-                                    variant="primary">Adicionar</Button>
-                            </Form>
+                                            <Button className={styles.confirmButton}
+                                                type={'submit'}
+                                                variant="primary">Adicionar</Button>
+                                        </Form>
+                                    </>
+                            }
+
                         </ModalBody>
                     </ModalComponent>
 
@@ -315,9 +363,20 @@ export function Todo() {
                                             </>
                                         )
                                 }
-
-
                             </Form>
+                        </ModalBody>
+                    </ModalComponent>
+
+                    <ModalComponent show={show}
+                        handleClose={handleModalClose}>
+                        <ModalHeader title="Editar o Projeto!" />
+                        <ModalBody>
+                            {showMessage === true ?   <Alert  variant={variant} 
+                                                        onClose={() => setShowMessage(false)} 
+                                                        dismissible>{message}</Alert>
+                                            :   <EditProjectForm 
+                                                                project_id={project_id!}
+                                                                onSubmit={onUpdateProject} />}
                         </ModalBody>
                     </ModalComponent>
                 </main>

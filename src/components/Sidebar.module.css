@@ -16,6 +16,7 @@
     align-items: center;
 
     margin-top: calc(0px - 1.5rem - 6px);
+    margin-bottom: 1rem;
 }
 
 .profile strong {

@@ -1,0 +1,58 @@
+.wrapper  {
+    max-width: 70rem;
+    margin: 2rem auto;
+    padding: 0 1rem;
+
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.wrapper main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-radius: 8px;
+}
+
+.checkFilter {
+    margin-right: 0.7rem;
+}
+
+.checkFilter:hover {
+    cursor: pointer;
+}
+
+.projects {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.btnAdd {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #333;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 18.8rem;
+    width: 15rem;
+    margin: 0.5rem;
+    transition: 0.5s;
+}
+
+.btnAdd:hover {
+    cursor: pointer;
+    background-color: #1C1C1C;
+    border-radius: 12px;
+    border: solid 1px #1C1C1C;
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        grid-template-columns: 1fr;
+    }
+}

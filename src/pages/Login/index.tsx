@@ -1,9 +1,9 @@
 import { Button, Col, Form, Image, Row } from "react-bootstrap";
 import styles from "./Login.module.css";
 import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthProvider";
+import { AuthContext } from "../../context/AuthProvider"; 
 import { useNavigate } from "react-router-dom";
-import BannerLogin from "../assets/images/banner-login.jpg";
+import BannerLogin from "../../assets/images/banner-login.jpg";
 import { SignIn } from "@phosphor-icons/react";
 
 export function Login() {
@@ -24,7 +24,7 @@ export function Login() {
         event.preventDefault();
         if (login && password) {
             const isLogged = await auth.authenticate(login, password);
-            navigate("/");
+            navigate("/dashboard");
         }
         else {
             alert("Mensagem de Error!!")
