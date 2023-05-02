@@ -10,7 +10,7 @@ export function Router() {
     return(
         <Routes>
             <Route path='/login' element={<Login />} />
-            <Route path='/dashboard' element={<Home />} />
+            <Route path='/dashboard' element={<ProtectedLayout><Home /></ProtectedLayout> } />
             <Route path="/projects" element={<ProtectedLayout><Projects /></ProtectedLayout>} />
             <Route path="/todos/:project_id" element={<ProtectedLayout><Todo /></ProtectedLayout>} />
         </Routes>

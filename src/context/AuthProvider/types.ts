@@ -1,4 +1,5 @@
 export interface IUSer {
+    name?: string;
     login?: string;
     token?: string; 
 }
