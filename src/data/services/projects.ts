@@ -20,11 +20,7 @@ export const addProject = async ({ name, description, category}: IProject) => {
 }
 
 export const getAllProjects = async () => {
-    const data = await API.get('/projects', {
-        headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im1lc3NpYXMuYmFycmV0byIsImlhdCI6MTY4MjYyMDk0NSwiZXhwIjoxNjg1MjEyOTQ1LCJzdWIiOiJkMjJiYjQ2NC04ZjUxLTRiNDktODBlZC04ZTUwZWZkMzE0ZDUifQ.dU2t7tTEvwC-Yy8hXF55SjpseUpSLg0Wbmv4mpwQMv4' //the token is a variable which holds the token
-        }
-    })
+    const data = await API.get('/projects')
         .then(function (response) {
             return response.data
         })
@@ -37,11 +33,7 @@ export const getAllProjects = async () => {
 }
 
 export const getProjectByid = async (id: string) => {
-    const data = await API.get(`/projects/${id}`, {
-        headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im1lc3NpYXMuYmFycmV0byIsImlhdCI6MTY4MjYyMDk0NSwiZXhwIjoxNjg1MjEyOTQ1LCJzdWIiOiJkMjJiYjQ2NC04ZjUxLTRiNDktODBlZC04ZTUwZWZkMzE0ZDUifQ.dU2t7tTEvwC-Yy8hXF55SjpseUpSLg0Wbmv4mpwQMv4' //the token is a variable which holds the token
-        }
-    })
+    const data = await API.get(`/projects/${id}`)
         .then(function (response) {
             return response.data
         })
@@ -55,11 +47,7 @@ export const getProjectByid = async (id: string) => {
 
 
 export const getProjectById = async (id: string) => {
-    const data = await API.get(`/projects/${id}`, {
-        headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im1lc3NpYXMuYmFycmV0byIsImlhdCI6MTY4MjYyMDk0NSwiZXhwIjoxNjg1MjEyOTQ1LCJzdWIiOiJkMjJiYjQ2NC04ZjUxLTRiNDktODBlZC04ZTUwZWZkMzE0ZDUifQ.dU2t7tTEvwC-Yy8hXF55SjpseUpSLg0Wbmv4mpwQMv4' //the token is a variable which holds the token
-        }
-    })
+    const data = await API.get(`/projects/${id}`)
         .then(function (response) {
             return response.data
         })
@@ -72,11 +60,7 @@ export const getProjectById = async (id: string) => {
 }
 
 export const getAllCategories = async () => {
-    const data = await API.get('/categories-project', {
-        headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Im1lc3NpYXMuYmFycmV0byIsImlhdCI6MTY4MjYyMDk0NSwiZXhwIjoxNjg1MjEyOTQ1LCJzdWIiOiJkMjJiYjQ2NC04ZjUxLTRiNDktODBlZC04ZTUwZWZkMzE0ZDUifQ.dU2t7tTEvwC-Yy8hXF55SjpseUpSLg0Wbmv4mpwQMv4' //the token is a variable which holds the token
-        }
-    })
+    const data = await API.get('/categories-project')
         .then(function (response) {
             return response.data
         })
