@@ -1,7 +1,7 @@
-.wrapper  {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+.wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .loginForm {
@@ -36,7 +36,7 @@
 }
 
 .register {
-    margin-top: 3rem;
+    margin-top: 2.8rem;
     font-size: 0.90rem;
     text-decoration: underline dotted var(--blue);
     color: #696969;
@@ -47,7 +47,12 @@
 }
 
 .image {
-    height: 40rem;
+    height: 38rem;
+}
+
+.btnCreateAccount {
+    width: 12rem;
+    margin-top: 2rem;
 }
 
 @media (max-width: 768px) {

@@ -43,8 +43,8 @@ export function Menu() {
                         <article className={styles.confirm}>
                             <strong>Tem Certeza que Deseja Sair?</strong>
                             <div className={styles.btnConfirm}>
-                                <Button variant="primary" onClick={() => setShow(false)}><KeyReturn size={32} />Retornar</Button>
-                                <Button variant="danger" onClick={onHandleLogout}><SignOut size={32} />Sair</Button>
+                                <Button variant="danger" onClick={onHandleLogout}><SignOut size={18} />Sair</Button>
+                                <Button variant="primary" onClick={() => setShow(false)}><KeyReturn size={18} />Retornar</Button>
                             </div>
                         </article>
                 </ModalBody>
