@@ -1,6 +1,6 @@
 import { PlusCircle } from "@phosphor-icons/react";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Filter } from "../../components/Filter";
 import { InputComponent } from "../../components/forms/InputComponent";
@@ -204,10 +204,10 @@ export function Projects() {
                         }
                       </SelectComponent>
 
-                      <InputComponent id="name"
-                        name="name"
-                        type="submit"
-                        placeholder="Adicionar" />
+                      <Button className={styles.confirmButton}
+                                                type={'submit'}
+                                                variant="primary">Adicionar</Button>
+
                     </Form>
                   </>
               }

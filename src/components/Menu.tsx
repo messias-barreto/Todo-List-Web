@@ -32,7 +32,11 @@ export function Menu() {
                         <ListChecks size={18} className={styles.icon} /> Projetos
                     </Link>
                 </li>
-                <li><User size={18} className={styles.icon} /> Perfil</li>
+                <li>
+                    <Link to={'/profile'}>
+                        <User size={18} className={styles.icon} /> Perfil
+                    </Link>
+                </li>
                 <li onClick={() => setShow(true)}><SignOut size={18} className={styles.icon} />Sair</li>
             </ul>
 

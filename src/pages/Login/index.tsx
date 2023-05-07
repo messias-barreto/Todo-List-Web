@@ -2,7 +2,7 @@ import { Button, Col, Form, Image, Row } from "react-bootstrap";
 import styles from "./Login.module.css";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BannerLogin from "../../assets/images/banner-login.jpg";
 import { SignIn } from "@phosphor-icons/react";
 import { Message } from "../../components/Message";
@@ -70,7 +70,7 @@ export function Login() {
                 </Form>
 
                 <hr />
-                <p className={styles.register}>Não tem Cadastro | <strong>Clique AQUI!</strong></p>
+                <p className={styles.register}>Não tem Cadastro | <Link to="/create-account"><strong>Clique AQUI!</strong></Link></p>
             </Col>
 
             <Col md={6}>

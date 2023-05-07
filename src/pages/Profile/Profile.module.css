@@ -1,0 +1,41 @@
+.wrapper  {
+    max-width: 70rem;
+    margin: 2rem auto;
+    padding: 0 1rem;
+
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.wrapper main {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    border-radius: 8px;
+}
+
+.checkFilter {
+    margin-right: 0.7rem;
+}
+
+.checkFilter:hover {
+    cursor: pointer;
+}
+
+.btnCreateAccount {
+    width: 12rem;
+    margin-top: 2rem;
+}
+
+.accordion {
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        grid-template-columns: 1fr;
+    }
+}

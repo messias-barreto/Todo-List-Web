@@ -16,9 +16,6 @@ export function Home() {
           <main>
                 <Menu />
                 <img src={ImgDashboard} className={styles.imageDashboard}/>
-                <article>
-                    
-                </article>
           </main>
         </div>
     </div>
