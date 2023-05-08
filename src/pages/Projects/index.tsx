@@ -40,7 +40,7 @@ export function Projects() {
   const [category, setCategory] = useState<string>('selectValue');
 
   const [show, setShow] = useState(false);
-  const handleShow = () => {  
+  const handleShow = () => {
     setShow(true);
     setShowMessage(false);
   }
@@ -63,26 +63,25 @@ export function Projects() {
 
   const onSubmitProject = async (event: FormEvent) => {
     event?.preventDefault();
-    
-    if(category === 'selectValue') {
+
+    if (category === 'selectValue') {
       setMessage('Selecione uma Categoria Válida!')
       setVariant('warning');
       setShowMessage(true);
       return false;
     }
 
-    await addProject({ name, description, category }).then(() => {
-      setMessage('Projeto foi Adicionado!')
+    const data = await addProject({ name, description, category });
+    setVariant('danger')
+
+    if (data.status === 201) {
       setVariant('success');
       setName('');
       setDesctiption('')
-
       handleProjects();
-    }).catch(() => {
-      setMessage('Não foi possível Adicionar o Projeto')
-      setVariant('danger')
-    })
+    }
 
+    setMessage(data.data.message)
     setShowMessage(true);
   }
 
@@ -99,6 +98,11 @@ export function Projects() {
   }
 
   function handleSearchProjectsByCategory(event: ChangeEvent<HTMLTextAreaElement>) {
+    if(event.target.value === 'all') {
+      setFilterProject(project);
+
+      return false;
+    }
     const category = project.filter((pro: IProject) => pro.category_id === event.target.value);
     setFilterProject(category);
   }
@@ -128,7 +132,14 @@ export function Projects() {
       <div className={styles.wrapper}>
         <div>
           <Sidebar>
-            <Filter title="Listagem por Categorias">
+            <Filter title="Listagem por Categorias"
+                    qtdItens={project.length}
+                    className={styles.checkFilter}
+                    type="radio"
+                    id={"radioListCategories"}
+                    name={"radioListCategories"}
+                    value={'all'}
+                    onClick={handleSearchProjectsByCategory}>
               {
                 projectCategory.map(project =>
                   <li key={project.id}>
@@ -154,19 +165,19 @@ export function Projects() {
           <Menu />
           <div className={styles.projects}>
 
-          {
-            filterProject.map((pro: IProject) =>
-              <Link to={`/todos/${pro.id}`} key={pro.id}>
-                <Work
-                  key={pro.id}
-                  name={pro.name}
-                  description={pro.description}
-                  percent={getPercentageProject(pro.qtd_todo, pro.qtd_todo_finish)} />
-              </Link>
-            )
-          }
+            {
+              filterProject.map((pro: IProject) =>
+                <Link to={`/todos/${pro.id}`} key={pro.id}>
+                  <Work
+                    key={pro.id}
+                    name={pro.name}
+                    description={pro.description}
+                    percent={getPercentageProject(pro.qtd_todo, pro.qtd_todo_finish)} />
+                </Link>
+              )
+            }
 
-          <PlusCircle size={250} onClick={handleShow} className={styles.btnAdd} />
+            <PlusCircle size={250} onClick={handleShow} className={styles.btnAdd} />
           </div>
 
           <ModalComponent show={show} handleClose={handleClose}>
@@ -174,7 +185,7 @@ export function Projects() {
             <ModalBody>
               {
                 showMessage === true ? <Message message={message}
-                  variant={ variant }
+                  variant={variant}
                   onClose={() => setShowMessage(false)}
                   dismissible /> :
                   <>
@@ -195,7 +206,7 @@ export function Projects() {
                       <SelectComponent label="Selecione a Categoria"
                         value={category}
                         onChange={handleChangeCategory}>
-                          <option value={'selectValue'}>Selecione</option>
+                        <option value={'selectValue'}>Selecione</option>
                         {
                           projectCategory.map((categories: IProjectCategory) => <option key={categories.id}
                             value={categories.id}>
@@ -205,8 +216,8 @@ export function Projects() {
                       </SelectComponent>
 
                       <Button className={styles.confirmButton}
-                                                type={'submit'}
-                                                variant="primary">Adicionar</Button>
+                        type={'submit'}
+                        variant="primary">Adicionar</Button>
 
                     </Form>
                   </>

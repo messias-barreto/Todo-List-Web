@@ -20,7 +20,18 @@ export const addTodo = async ({ title, description, project_id, status }: ITodo)
         status
     }
 
-    const data = await API.post(`/todos/${project_id}`, todo)
+    const data = await API.post(`/todos/${project_id}`, todo).then(res => {
+        return {
+            data: res.data,
+            status: res.status
+        }
+    }).catch((err) => {
+        return {
+            data: err.response.data,
+            status: err.response.status
+        }
+    })
+    
     return data;
 
 }

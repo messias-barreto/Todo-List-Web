@@ -3,16 +3,27 @@ import styles from './Filter.module.css';
 
 interface IProps {
     title: string;
-    children: JSX.Element | JSX.Element[]
-    onSubmit?: () => Promise<void>
-  }
-  
-export function Filter({title, children}: IProps) {
+    children: JSX.Element | JSX.Element[];
+    onSubmit?: () => Promise<void>;
+    qtdItens?: number;
+}
+
+export function Filter({ title, children, qtdItens, ...props }: IProps) {
     return (
         <aside className={styles.filter}>
             <h2>{title}</h2>
             <ul>
-                { children }
+                <li key={'all'}>
+                    <p>
+                        <input {...props} />
+                        Todos
+                    </p>
+
+                    <strong>{qtdItens}</strong>
+                </li>
+
+
+                {children}
             </ul>
         </aside>
     )

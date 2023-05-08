@@ -49,14 +49,16 @@ export function Todo() {
     const [todoId, setTodoId] = useState<string>('');
 
     const { project_id } = useParams();
-    
+
     const [project, setProject] = useState<IProject>();
     const navigate = useNavigate();
 
     const [show, setShow] = useState<boolean>(false);
+    const [showMessageTarefaConcluida, setShowTarefaConcluida] = useState(false);
 
     const handleModalShow = () => {
         setShow(true);
+        setShowMessage(false);
     }
 
     const handleModalClose = () => {
@@ -126,20 +128,18 @@ export function Todo() {
             status = find_status.id;
         }
 
-        await addTodo({ title, description, project_id: id, status })
-            .then(() => {
-                setMessage('Tarefa foi Adicionada!');
-                setVariant('success');
-                setTitle('');
-                setDesctiption('');
-
-                handleTodo();
-            }).catch(err => {
-                setMessage('Não foi possível Adicionar a Tarefa!')
-                setVariant('danger')
-            });
-
-        setShowMessage(true)
+        const res = await addTodo({ title, description, project_id: id, status });
+        setVariant('danger');
+        
+        if(res.status === 201) {
+            setVariant('success');
+            setTitle('');
+            setDesctiption('');
+            handleTodo();
+        }
+            
+        setMessage(res.data.message);
+        setShowMessage(true);
     }
 
     async function handleRemoveTodo(event: FormEvent) {
@@ -160,17 +160,15 @@ export function Todo() {
     async function onUpdateProject(name: string, description: string, category: string) {
         event?.preventDefault();
 
-        await editProject({ name, description, category, id: project_id }).then(() => {
-            setMessage('Projeto foi Adicionado!')
+        setVariant('danger');
+        const data = await editProject({ name, description, category, id: project_id });
+        if (data.status === 200) {
             setVariant('success');
-            
-            handleGetProject();
-        }).catch(() => {
-            setMessage('Não foi possível Adicionar o Projeto')
-            setVariant('danger')
-        })
+        }
 
+        setMessage(data.data.message)
         setShowMessage(true);
+        handleGetProject();
     }
 
     const onSubmitUpdateStatusTodo = async (id: string | undefined, statusName: string) => {
@@ -182,7 +180,12 @@ export function Todo() {
             status = find_status.id;
         }
 
-        await updateStatusTodo(status, id)
+        console.log(statusName);
+        await updateStatusTodo(status, id);
+
+        if(statusName === 'Finalizado')
+            setShowTarefaConcluida(true);
+        
         await handleTodo();
     }
 
@@ -204,8 +207,13 @@ export function Todo() {
     }
 
     function handleSearchTodoByStatus(event: ChangeEvent<HTMLTextAreaElement>): void {
-        const category = todo.filter((todo: ITodo) => todo.status === event.target.value);
-        setFilterTodo(category);
+        if(event.target.value === 'all') {
+            setFilterTodo(todo);
+        }else {
+            const category = todo.filter((todo: ITodo) => todo.status === event.target.value);
+            setFilterTodo(category);
+        }
+
     }
 
     function getValueCategoryTodo(status: string): number {
@@ -229,7 +237,14 @@ export function Todo() {
             <div className={styles.wrapper}>
                 <div>
                     <Sidebar>
-                        <Filter title="Listagem por Status">
+                        <Filter title="Listagem por Status"
+                                qtdItens={todo.length}
+                                className={styles.checkFilter}
+                                type="radio"
+                                id={"radioListCategories"}
+                                name={"radioListCategories"}
+                                value={'all'}
+                                onClick={handleSearchTodoByStatus}>
                             {
                                 statusTodo.map(status =>
                                     <li key={status.id}>
@@ -367,16 +382,26 @@ export function Todo() {
                         </ModalBody>
                     </ModalComponent>
 
+
+                     {/** MODAL EXIBIR MENSAGEM TAREFA FINALIZADA */}
+                     <ModalComponent show={showMessageTarefaConcluida}
+                        handleClose={() => setShowTarefaConcluida(false)}>
+                        <ModalBody>
+                                <Message message="Tarefa Finalizada com Sucesso!" variant="success" />
+                        </ModalBody>
+                    </ModalComponent>
+
+                    {/* MODAL EDITAR DADOS DO PROJETO */}
                     <ModalComponent show={show}
                         handleClose={handleModalClose}>
                         <ModalHeader title="Editar o Projeto!" />
                         <ModalBody>
-                            {showMessage === true ?   <Alert  variant={variant} 
-                                                        onClose={() => setShowMessage(false)} 
-                                                        dismissible>{message}</Alert>
-                                            :   <EditProjectForm 
-                                                                project_id={project_id!}
-                                                                onSubmit={onUpdateProject} />}
+                            {showMessage === true ? <Alert variant={variant}
+                                onClose={() => setShowMessage(false)}
+                                dismissible>{message}</Alert>
+                                : <EditProjectForm
+                                    project_id={project_id!}
+                                    onSubmit={onUpdateProject} />}
                         </ModalBody>
                     </ModalComponent>
                 </main>

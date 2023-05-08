@@ -14,9 +14,41 @@ export const addProject = async ({ name, description, category}: IProject) => {
         category_id: category
     }
     
-     const data = await API.post('projects',project)
-    return data;
+    const data = await API.post('/projects', project).then((res) => {
+        return {
+            data: res.data,
+            status: res.status
+        }
+    }).catch((err) => {
+        return {
+            data: err.response.data,
+            status: err.response.status
+        }
+    })
 
+    return data
+}
+
+export const editProject = async ({ name, description, category, id }: IProject) => {
+    const project = {
+        name, 
+        description, 
+        category_id: category
+    }
+    
+    const data = await API.patch(`projects/${id}`, project).then((res) => {
+        return {
+            data: res.data,
+            status: res.status
+        }
+    }).catch((err) => {
+        return {
+            data: err.response.data,
+            status: err.response.status
+        }
+    })
+
+    return data;
 }
 
 export const getAllProjects = async () => {
@@ -69,16 +101,4 @@ export const getAllCategories = async () => {
         })
 
     return data
-}
-
-export const editProject = async ({ name, description, category, id}: IProject) => {
-    const project = {
-        name, 
-        description, 
-        category_id: category
-    }
-    
-     const data = await API.patch(`projects/${id}`,project)
-    return data;
-
 }

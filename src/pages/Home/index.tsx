@@ -10,7 +10,7 @@ export function Home() {
         <Header />
         <div className={styles.wrapper}>
           <div>
-            <Sidebar></Sidebar>
+            <Sidebar />
           </div>
   
           <main>
