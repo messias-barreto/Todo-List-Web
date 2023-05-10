@@ -180,9 +180,7 @@ export function Todo() {
             status = find_status.id;
         }
 
-        console.log(statusName);
         await updateStatusTodo(status, id);
-
         if(statusName === 'Finalizado')
             setShowTarefaConcluida(true);
         

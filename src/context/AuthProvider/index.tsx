@@ -1,52 +1,62 @@
-import React, {createContext, useEffect, useState} from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { IAuthProvider, IContext, IUSer } from "./types";
-import { getTokenLocalStorage, getUserLocalStorage, LoginRequest, setTokenLocalStorage, setUserLocalStorage, validateToken } from "./util";
+import { getRefreshTokenLocalStorage, getTokenLocalStorage, getUserLocalStorage, LoginRequest, setRefreshTokenLocalStorage, setTokenLocalStorage, setUserLocalStorage, validateToken } from "./util";
 
 export const AuthContext = createContext<IContext>({} as IContext);
 
 export const AuthProvider = ({ children }: IAuthProvider) => {
     const [user, setUser] = useState<IUSer | null>();
-    
+
     useEffect(() => {
         const validate = async () => {
             const token = await getTokenLocalStorage();
-            if(token) {
-                const refresh_token = await validateToken(token);
-                   
-                if(refresh_token) {
-                    const user = await getUserLocalStorage();
-                    setUser(user);
-                    setTokenLocalStorage(refresh_token);
-                }
-            }else {
-                setUser(null);
-                await setUserLocalStorage(null);
-                await setTokenLocalStorage(null);
+            const refreshToken = await getRefreshTokenLocalStorage();
+
+            let response = await validateToken(token);
+
+            if (response === null) {
+                response = await validateToken(refreshToken);
             }
+
+            //validar com o refreshToken
+            if (response === null) {
+                setUser(null);
+                return false;
+            }
+
+            const user = await getUserLocalStorage();
+            setUser(user);
+            await setTokenLocalStorage(response.token);
+            await setRefreshTokenLocalStorage(response.refresh_token);
         }
 
         validate();
     }, [])
 
-    async function authenticate (login: string, password: string) {
+    async function authenticate(login: string, password: string) {
         const response = await LoginRequest(login, password);
-        
-        const payload = {   name: response.user.name,
-                            login, 
-                            email: response.user.email }
+
+        const payload = {
+            name: response.user.name,
+            login,
+            email: response.user.email
+        }
+
         setUser(payload);
         await setUserLocalStorage(payload);
-        await setTokenLocalStorage(response.refresh_token);
+        await setTokenLocalStorage(response.token);
+        await setRefreshTokenLocalStorage(response.refresh_token);
     }
 
-    function logout () {
+    async function logout() {
         setUser(null);
-        setUserLocalStorage(null);
-        setTokenLocalStorage(null);
+        await setUserLocalStorage(null);
+        await setTokenLocalStorage(null);
+        await setRefreshTokenLocalStorage(null);
     }
 
     return (
-        <AuthContext.Provider value={{...user, authenticate, logout }}>
+        <AuthContext.Provider value={{ ...user, authenticate, logout }}>
             {children}
         </AuthContext.Provider>
     )

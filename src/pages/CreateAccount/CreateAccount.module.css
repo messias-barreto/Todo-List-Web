@@ -59,4 +59,8 @@
     .wrapper {
         flex-direction: column;
     }
+
+    .image {
+        display: none;
+    }
 }

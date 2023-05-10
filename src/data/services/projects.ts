@@ -57,7 +57,6 @@ export const getAllProjects = async () => {
             return response.data
         })
         .catch(function (error) {
-            console.error(error);
             return error;
         })
 
@@ -70,7 +69,6 @@ export const getProjectByid = async (id: string) => {
             return response.data
         })
         .catch(function (error) {
-            console.error(error);
             return error;
         })
 
@@ -84,7 +82,6 @@ export const getProjectById = async (id: string) => {
             return response.data
         })
         .catch(function (error) {
-            console.error(error);
             return error;
         })
 

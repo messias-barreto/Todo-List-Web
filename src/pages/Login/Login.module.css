@@ -50,8 +50,17 @@
     height: 40rem;
 }
 
+.bannerLogin {
+    display: block;
+    border: 1px solid black;
+}
+
 @media (max-width: 768px) {
     .wrapper {
         flex-direction: column;
+    }
+
+    .image {
+        display: none;
     }
 }

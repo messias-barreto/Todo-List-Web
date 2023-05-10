@@ -1,4 +1,4 @@
-import { Button, Col, Form, Image, Row } from "react-bootstrap";
+import { Button, Col, Form, Image, Row, Spinner } from "react-bootstrap";
 import styles from "./Login.module.css";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
@@ -10,6 +10,7 @@ import { Message } from "../../components/Message";
 export function Login() {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false); 
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -27,11 +28,14 @@ export function Login() {
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setLoading(true);
+
         await auth.authenticate(login, password).then(() => navigate("/dashboard"))
                                                 .catch(() => {
                                                     setMessage('Login ou Senha Incorreta(s)!');
                                                     setVariant('danger');
                                                     setShow(true);
+                                                    setLoading(false)
                                                 })
     }
 
@@ -44,9 +48,9 @@ export function Login() {
                    <Message message={message} variant={variant} show={show} onClose={() => setShow(false)} dismissible />
                     
                     <Form.Group className="mb-3">
-                        <Form.Label><strong>Login | Email</strong></Form.Label>
+                        <Form.Label><strong>Login</strong></Form.Label>
                         <Form.Control type="text"
-                            placeholder="Digite seu Login ou Email"
+                            placeholder="Digite seu Login"
                             value={login}
                             onChange={onChangeLogin}
                             required />
@@ -64,7 +68,11 @@ export function Login() {
                     <Button variant="primary"
                         type="submit"
                         className={styles.button}>
-                        <SignIn size={20} className={styles.iconBtnLogin} />
+                            { 
+                                loading === true ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/> 
+                                                 : <SignIn size={20} className={styles.iconBtnLogin} />
+                            }
+                        
                         Logar
                     </Button>
                 </Form>

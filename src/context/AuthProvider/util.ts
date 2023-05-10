@@ -25,13 +25,28 @@ export async function getTokenLocalStorage () {
     return token ?? null;
 }
 
+export async function setRefreshTokenLocalStorage (token: string | null) {
+    localStorage.setItem('auth-refresh-token', JSON.stringify(token));
+}
+
+export async function getRefreshTokenLocalStorage () {
+    const token = localStorage.getItem('auth-refresh-token');
+    if(!token) { return null; }
+    
+    return token ?? null;
+}
+
+
 export async function validateToken (token: string | null) {
     const refresh = token?.replaceAll('"', '');
 
     const response = await API.post('/refresh-token', { token: refresh })
-    .then(res => {return res.data}).catch(err => {
-        console.error
-        return null;
+    .then(res => { 
+        return res.data 
+    
+    })
+    .catch(() => { 
+        return null 
     })
     
     return response;
