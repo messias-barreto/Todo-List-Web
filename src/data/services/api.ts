@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getTokenLocalStorage } from '../../context/AuthProvider/util';
 
 export const API = axios.create({
-    baseURL: "http://15.228.233.68"
+    baseURL: "http://localhost:3300"
 });
 
 API.interceptors.request.use(
