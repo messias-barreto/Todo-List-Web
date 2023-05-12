@@ -17,7 +17,7 @@ Sistema criado com a finalidade de gerenciar a Lista de Tarefas de Diversos Proj
   <img src="https://github.com/messias-barreto/messias-barreto-assets/blob/main/todo-list/login.jpg?raw=true" />
   <br /> <br />
   
-  <h4>Dashboard</h4>
+  <h4>Home</h4>
   <img src="https://github.com/messias-barreto/messias-barreto-assets/blob/main/todo-list/dashboard.jpg?raw=true" />
   <br /> <br />
   
