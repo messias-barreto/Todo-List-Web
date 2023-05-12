@@ -2,7 +2,7 @@
 Projeto com o foco de aprofundar os estudos em React.Js
 
 ## Sobre o Projeto
-Sistema criado com a finalidade de gerenciar Lista de Tarefas de diversos Projetos 
+Sistema criado com a finalidade de gerenciar a Lista de Tarefas de Diversos Projetos 
 
 ## Funcionalidades
 - criar conta 
