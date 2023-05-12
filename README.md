@@ -2,7 +2,7 @@
 Projeto Criado com o foco de aprofundar os estudos em React.Js
 
 ## Sobre o Projeto
-Sistema possui a finalidade de gerenciar a Lista de Tarefas, de Diversos Projetos criados pelo Usuário 
+Sistema possui a finalidade de gerenciar Listas de Tarefas de Diversos Projetos criados pelo Usuário.
 
 ## Funcionalidades
 - criar conta 
