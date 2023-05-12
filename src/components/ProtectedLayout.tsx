@@ -10,7 +10,7 @@ export function ProtectedLayout({ children }: {children: JSX.Element}){
 
     setTimeout(() => { 
         setValida(true)
-     }, 2000);
+     }, 3000);
 
     return  valida === false ? <div className={styles.waitPage}><Spinner className={styles.spinner} animation="grow" /></div> : 
             !auth.login ? <Login /> : children 

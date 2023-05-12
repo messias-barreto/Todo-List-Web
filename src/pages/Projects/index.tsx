@@ -93,11 +93,11 @@ export function Projects() {
     setDesctiption(event.target.value);
   }
 
-  function handleChangeCategory(event: ChangeEvent<HTMLTextAreaElement>) {
+  function handleChangeCategory(event: ChangeEvent<HTMLSelectElement>) {
     setCategory(event.target.value);
   }
 
-  function handleSearchProjectsByCategory(event: ChangeEvent<HTMLTextAreaElement>) {
+  function handleSearchProjectsByCategory(event: ChangeEvent<HTMLInputElement>) {
     if(event.target.value === 'all') {
       setFilterProject(project);
 
@@ -134,6 +134,7 @@ export function Projects() {
           <Sidebar>
             <Filter title="Listagem por Categorias"
                     qtdItens={project.length}
+                    // @ts-ignore ts2304
                     className={styles.checkFilter}
                     type="radio"
                     id={"radioListCategories"}
@@ -150,6 +151,7 @@ export function Projects() {
                         id={"radioListCategories"}
                         name={"radioListCategories"}
                         value={project.id}
+                        //@ts-ignore 
                         onClick={handleSearchProjectsByCategory} />
                       {project.name}
                     </p>
@@ -185,9 +187,10 @@ export function Projects() {
             <ModalBody>
               {
                 showMessage === true ? <Message message={message}
-                  variant={variant}
-                  onClose={() => setShowMessage(false)}
-                  dismissible /> :
+                                                show
+                                                variant={variant}
+                                                onClose={() => setShowMessage(false)}
+                                                dismissible /> :
                   <>
                     <Form onSubmit={onSubmitProject}>
                       <InputComponent id="name"

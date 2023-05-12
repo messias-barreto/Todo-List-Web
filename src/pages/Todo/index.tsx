@@ -237,6 +237,7 @@ export function Todo() {
                     <Sidebar>
                         <Filter title="Listagem por Status"
                                 qtdItens={todo.length}
+                                //@ts-ignore
                                 className={styles.checkFilter}
                                 type="radio"
                                 id={"radioListCategories"}
@@ -253,6 +254,7 @@ export function Todo() {
                                                 id={"radioListCategories"}
                                                 name={"radioListCategories"}
                                                 value={status.name}
+                                                //@ts-ignore 
                                                 onClick={handleSearchTodoByStatus} />
                                             {status.name}
                                         </p>
@@ -274,7 +276,6 @@ export function Todo() {
 
                             <div className={styles.options}>
                                 <Pencil className={styles.icons} size={32} onClick={handleModalShow} />
-                                <Trash className={styles.icons} size={32} />
                             </div>
                         </header>
                         <strong>{project?.name}</strong>
@@ -295,6 +296,7 @@ export function Todo() {
                             status={todo.status}
                             key={todo.id}
                             onSubmit={() => onSubmitUpdateStatusTodo(todo.id, 'Finalizado')}
+                            //@ts-ignore 
                             onClick={() => handleShowModalRemoveAdd(todo.id)}
                         >
 
@@ -328,7 +330,9 @@ export function Todo() {
                         <ModalHeader title="Adicionar Nova Tarefa!" />
                         <ModalBody>
                             {
-                                showMessage === true ? <Message message={message}
+                                showMessage === true ? <Message 
+                                    show
+                                    message={message}
                                     variant={variant}
                                     onClose={() => setShowMessage(false)}
                                     dismissible /> :
@@ -385,7 +389,7 @@ export function Todo() {
                      <ModalComponent show={showMessageTarefaConcluida}
                         handleClose={() => setShowTarefaConcluida(false)}>
                         <ModalBody>
-                                <Message message="Tarefa Finalizada com Sucesso!" variant="success" />
+                                <Message show message="Tarefa Finalizada com Sucesso!" variant="success" onClose={() => setShowTarefaConcluida(false)} />
                         </ModalBody>
                     </ModalComponent>
 

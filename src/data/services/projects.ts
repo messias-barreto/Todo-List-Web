@@ -99,3 +99,18 @@ export const getAllCategories = async () => {
 
     return data
 }
+
+export const deleteProject = async (id: string) => {
+    const data = await API.delete(`/projects/${id}`)
+        .then(function (response) {
+            return {
+                    message: 'O Projeto foi Removido com sucesso!',
+                    data: response.data
+                }
+        })
+        .catch(function (error) {
+            return error;
+        })
+
+    return data
+}

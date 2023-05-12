@@ -65,3 +65,9 @@
 .optProject .icon:hover {
     background-color: var(--blue);
 }
+
+@media (max-width: 543px) {
+    .works {
+        width: 90%;
+    }
+}

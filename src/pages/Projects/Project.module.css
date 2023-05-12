@@ -62,3 +62,12 @@
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 543px) {
+    .projects {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+    }
+}

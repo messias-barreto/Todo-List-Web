@@ -1,4 +1,3 @@
-import { SignIn } from '@phosphor-icons/react';
 import { ChangeEvent, useContext, useState } from 'react';
 import { Button, Col, Form, Image } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -81,7 +80,12 @@ export function CreateAccount() {
                 <strong>Criando a sua Conta</strong>
 
                 <Form onSubmit={handleCreateAccount}>
-                    <Message message={message} variant={variant} show={show} onClose={() => setShow(false)} dismissible />
+                    <Message    message={message} 
+                                variant={variant} 
+                                show={show} 
+                                onClose={() => setShow(false)} 
+                                dismissible />
+
                     <InputComponent
                         id={name}
                         name={name}

@@ -5,7 +5,7 @@ import styles from './Input.module.css';
 interface IProps {
     label?: string;
     value: string;
-    onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+    onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
     children: ReactNode | ReactNode[] | [];
 }
 

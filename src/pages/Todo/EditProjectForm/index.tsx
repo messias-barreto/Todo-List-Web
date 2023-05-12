@@ -37,7 +37,7 @@ export function EditProjectForm({ project_id, onSubmit }: IProps) {
         setDescription(event.target.value)
     }
 
-    const handleChangeCategory = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const handleChangeCategory = (event: ChangeEvent<HTMLSelectElement>) => {
         setCategory(event.target.value)
     }
 
