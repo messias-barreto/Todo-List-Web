@@ -8,6 +8,8 @@ Sistema criado com a finalidade de gerenciar a Lista de Tarefas de Diversos Proj
 - criar conta 
 - criar / editar projeto 
 - adicionar / remover as tarefas no projeto
+- atualizar dados do perfil do usuário
+- atualizar senha do usuário
 
 ## Telas
 <div style="padding: 50px">
