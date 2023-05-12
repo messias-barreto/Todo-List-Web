@@ -1,5 +1,5 @@
 # Todo-List-Web
-Projeto com o foco de aprofundar os estudos em React.Js
+Projeto Criado com o foco de aprofundar os estudos em React.Js
 
 ## Sobre o Projeto
 Sistema criado com a finalidade de gerenciar a Lista de Tarefas de Diversos Projetos 
