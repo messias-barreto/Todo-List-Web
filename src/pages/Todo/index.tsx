@@ -13,7 +13,7 @@ import styles from './Todo.module.css';
 import { TodoComponent } from "../../components/Todo";
 import { useParams } from "react-router-dom";
 import { KeyReturn, Pencil, PlusCircle, Trash } from "@phosphor-icons/react";
-import { Alert, Button, Form } from "react-bootstrap";
+import { Alert, Button, Form, Spinner } from "react-bootstrap";
 import { ModalComponent } from "../../components/modal/ModalComponent";
 import { ModalHeader } from "../../components/modal/ModalHeader";
 import { ModalBody } from "../../components/modal/ModalBody";
@@ -43,6 +43,9 @@ export function Todo() {
     const [filterTodo, setFilterTodo] = useState<ITodo[]>([]);
     const [statusTodo, setStatusTodo] = useState<IStatusTodo[]>([]);
     const [information, setInformation] = useState<string>('');
+
+    const [loadingTodo, setLoadingTodo] = useState<boolean>(false);
+    const [loadingUpdateTodo, setLoadingUpdateTodo] = useState<boolean>(false);
 
     const [title, setTitle] = useState<string>('');
     const [description, setDesctiption] = useState<string>('');
@@ -100,10 +103,12 @@ export function Todo() {
     };
 
     async function handleTodo() {
+        setLoadingTodo(true);
         const id = project_id !== undefined ? project_id : '';
         await getTodosByProject(id).then(res => {
             setTodo(res)
             setFilterTodo(res)
+            setLoadingTodo(false);
         }).catch((error) => { console.error(error) })
     }
 
@@ -119,6 +124,7 @@ export function Todo() {
 
     async function onSubmitTodo(event: FormEvent) {
         event?.preventDefault();
+        setLoadingUpdateTodo(true);
 
         const id = project_id !== undefined ? project_id : '';
         let status: string = 'error';
@@ -130,20 +136,23 @@ export function Todo() {
 
         const res = await addTodo({ title, description, project_id: id, status });
         setVariant('danger');
-        
-        if(res.status === 201) {
+
+        if (res.status === 201) {
             setVariant('success');
             setTitle('');
             setDesctiption('');
             handleTodo();
         }
-            
+
         setMessage(res.data.message);
         setShowMessage(true);
+        setLoadingUpdateTodo(false);
     }
 
     async function handleRemoveTodo(event: FormEvent) {
         event?.preventDefault()
+        setLoadingUpdateTodo(true)
+
         await deleteTodo(todoId).then(() => {
             setMessage('Tarefa foi Removida com Sucesso!');
             setVariant('success');
@@ -154,6 +163,7 @@ export function Todo() {
             setVariant('danger');
         })
 
+        setLoadingUpdateTodo(false);
         setShowMessage(true);
     }
 
@@ -175,16 +185,19 @@ export function Todo() {
         event?.preventDefault()
         let status = 'error';
 
+        setLoadingUpdateTodo(true);
+
         const find_status = statusTodo.find((stat: IStatusTodo) => stat.name === statusName);
         if (find_status !== undefined) {
             status = find_status.id;
         }
 
         await updateStatusTodo(status, id);
-        if(statusName === 'Finalizado')
+        if (statusName === 'Finalizado')
             setShowTarefaConcluida(true);
-        
+
         await handleTodo();
+        setLoadingUpdateTodo(false);
     }
 
     function handleChangeTitle(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -205,9 +218,9 @@ export function Todo() {
     }
 
     function handleSearchTodoByStatus(event: ChangeEvent<HTMLTextAreaElement>): void {
-        if(event.target.value === 'all') {
+        if (event.target.value === 'all') {
             setFilterTodo(todo);
-        }else {
+        } else {
             const category = todo.filter((todo: ITodo) => todo.status === event.target.value);
             setFilterTodo(category);
         }
@@ -236,14 +249,14 @@ export function Todo() {
                 <div>
                     <Sidebar>
                         <Filter title="Listagem por Status"
-                                qtdItens={todo.length}
-                                //@ts-ignore
-                                className={styles.checkFilter}
-                                type="radio"
-                                id={"radioListCategories"}
-                                name={"radioListCategories"}
-                                value={'all'}
-                                onClick={handleSearchTodoByStatus}>
+                            qtdItens={todo.length}
+                            //@ts-ignore
+                            className={styles.checkFilter}
+                            type="radio"
+                            id={"radioListCategories"}
+                            name={"radioListCategories"}
+                            value={'all'}
+                            onClick={handleSearchTodoByStatus}>
                             {
                                 statusTodo.map(status =>
                                     <li key={status.id}>
@@ -291,38 +304,64 @@ export function Todo() {
                         </span>
                     </div>
                     {
-                        filterTodo.map((todo: ITodo) => <TodoComponent id={todo.id}
-                            name={todo.title}
-                            status={todo.status}
-                            key={todo.id}
-                            onSubmit={() => onSubmitUpdateStatusTodo(todo.id, 'Finalizado')}
-                            //@ts-ignore 
-                            onClick={() => handleShowModalRemoveAdd(todo.id)}
-                        >
+                        loadingTodo === true ? <div className={styles.waitPage}>
+                            <Spinner as="span" animation="border" variant="dark" />
+                        </div> :
+                            (
+                                filterTodo.map((todo: ITodo) => <TodoComponent id={todo.id}
+                                    name={todo.title}
+                                    status={todo.status}
+                                    key={todo.id}
+                                    onSubmit={() => onSubmitUpdateStatusTodo(todo.id, 'Finalizado')}
+                                    //@ts-ignore 
+                                    onClick={() => handleShowModalRemoveAdd(todo.id)}
+                                >
 
-                            <strong>{todo.title}</strong>
-                            <p>{todo.status}</p>
-                            {
-                                todo.status === 'Em Aguardo' ?
-                                    <Button className={styles.confirmButton}
-                                        variant="primary"
-                                        onClick={() => onSubmitUpdateStatusTodo(todo.id, 'Em Andamento')}
-                                        value="Iniciar a Tarefa">
-                                        Iniciar a Tarefa
-                                    </Button> : ''
-                            }
+                                    <strong>{todo.title}</strong>
+                                    <p>{todo.status}</p>
+                                    {
+                                        todo.status === 'Em Aguardo' ?
+                                            <Button className={styles.confirmButton}
+                                                variant="primary"
+                                                onClick={() => onSubmitUpdateStatusTodo(todo.id, 'Em Andamento')}
+                                                value="Iniciar a Tarefa">
+                                                {
+                                                    loadingUpdateTodo === true && (
+                                                        <Spinner as="span"
+                                                            animation="border"
+                                                            size="sm"
+                                                            role="status"
+                                                            className={styles.Spinner}
+                                                            aria-hidden="true" />
+                                                    )
+                                                }
 
-                            {
-                                todo.status === 'Em Andamento' || todo.status === 'Finalizado' ?
-                                    <Button className={styles.confirmButton}
-                                        variant="danger"
-                                        onClick={() => onSubmitUpdateStatusTodo(todo.id, 'Em Aguardo')}
-                                        value="Retornar para Aguardo">
-                                        Retornar para Aguardo
-                                    </Button> : ''
-                            }
-                        </TodoComponent>
-                        )
+                                                <span>Iniciar a Tarefa</span>
+                                            </Button> : ''
+                                    }
+
+                                    {
+                                        todo.status === 'Em Andamento' || todo.status === 'Finalizado' ?
+                                            <Button className={styles.confirmButton}
+                                                variant="danger"
+                                                onClick={() => onSubmitUpdateStatusTodo(todo.id, 'Em Aguardo')}
+                                                value="Retornar para Aguardo">
+                                                {
+                                                    loadingUpdateTodo === true && (
+                                                        <Spinner as="span"
+                                                            animation="border"
+                                                            size="sm"
+                                                            role="status"
+                                                            className={styles.Spinner}
+                                                            aria-hidden="true" />
+                                                    )
+                                                }
+                                                <span>Retornar para Aguardo</span>
+                                            </Button> : ''
+                                    }
+                                </TodoComponent>
+                                )
+                            )
                     }
 
                     {/* Modal para Adicionar Tarefa */}
@@ -330,7 +369,7 @@ export function Todo() {
                         <ModalHeader title="Adicionar Nova Tarefa!" />
                         <ModalBody>
                             {
-                                showMessage === true ? <Message 
+                                showMessage === true ? <Message
                                     show
                                     message={message}
                                     variant={variant}
@@ -353,7 +392,19 @@ export function Todo() {
 
                                             <Button className={styles.confirmButton}
                                                 type={'submit'}
-                                                variant="primary">Adicionar</Button>
+                                                variant="primary">
+                                                {
+                                                    loadingUpdateTodo === true && (
+                                                        <Spinner as="span"
+                                                            animation="border"
+                                                            size="sm"
+                                                            role="status"
+                                                            className={styles.Spinner}
+                                                            aria-hidden="true" />
+                                                    )
+                                                }
+                                                <span>Adicionar</span>
+                                            </Button>
                                         </Form>
                                     </>
                             }
@@ -376,7 +427,18 @@ export function Todo() {
                                                 <p>Você realmente deseja remover essa tarefa?</p>
                                                 <Button className={styles.confirmButton}
                                                     type={'submit'}
-                                                    variant="danger">Remover</Button>
+                                                    variant="danger">
+                                                    {
+                                                        loadingUpdateTodo === true && (
+                                                            <Spinner as="span"
+                                                                animation="border"
+                                                                size="sm"
+                                                                role="status"
+                                                                className={styles.Spinner}
+                                                                aria-hidden="true" />
+                                                        )
+                                                    }
+                                                    <span>Remover</span></Button>
                                             </>
                                         )
                                 }
@@ -385,11 +447,11 @@ export function Todo() {
                     </ModalComponent>
 
 
-                     {/** MODAL EXIBIR MENSAGEM TAREFA FINALIZADA */}
-                     <ModalComponent show={showMessageTarefaConcluida}
+                    {/** MODAL EXIBIR MENSAGEM TAREFA FINALIZADA */}
+                    <ModalComponent show={showMessageTarefaConcluida}
                         handleClose={() => setShowTarefaConcluida(false)}>
                         <ModalBody>
-                                <Message show message="Tarefa Finalizada com Sucesso!" variant="success" onClose={() => setShowTarefaConcluida(false)} />
+                            <Message show message="Tarefa Finalizada com Sucesso!" variant="success" onClose={() => setShowTarefaConcluida(false)} />
                         </ModalBody>
                     </ModalComponent>
 

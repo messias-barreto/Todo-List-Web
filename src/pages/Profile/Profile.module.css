@@ -34,6 +34,10 @@
     margin-top: 2rem;
 }
 
+.Spinner {
+    margin-right: 0.30rem;
+}
+
 @media (max-width: 768px) {
     .wrapper {
         grid-template-columns: 1fr;

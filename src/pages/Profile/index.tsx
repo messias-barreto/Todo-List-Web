@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useContext, useState } from "react";
-import { Accordion, Button, Form } from "react-bootstrap";
+import { Accordion, Button, Form, Spinner } from "react-bootstrap";
 import { InputComponent } from "../../components/forms/InputComponent";
 import { Header } from "../../components/Header";
 import { Menu } from "../../components/Menu";
@@ -25,6 +25,11 @@ export function Profile() {
     const [show, setShow] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
     const [variant, setVariant] = useState<string>('');
+
+    const [loadingProfile, setLoadingProfile] = useState<boolean>(false);
+    const [loadingPassword, setLoadingPassword] = useState<boolean>(false);
+
+    const [showPasswordMessage, setShowPasswordMessage] = useState<boolean>(false);
 
     const onChangeName = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setName(event.target.value)
@@ -52,6 +57,7 @@ export function Profile() {
 
     const handleUpdateProfile = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setLoadingProfile(true);
 
         const res = await updateProfile({ name, login, email });
         if (res.status !== 200) {
@@ -59,24 +65,28 @@ export function Profile() {
             setVariant('danger');
             setShow(true);
 
+            setLoadingProfile(false);
             return false;
         }
 
         setMessage(res.data.message);
         setVariant('success');
         setShow(true);
+        setLoadingProfile(false);
 
-        const user = {name, login, email };
+        const user = { name, login, email };
         await setUserLocalStorage(user);
     }
 
     const handleUpdatePassword = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setLoadingPassword(true);
 
         if (newPassword !== confirmNewPassword) {
             setMessage('Senhas Informadas são Diferentes!');
             setVariant('warning');
-            setShow(true);
+            setShowPasswordMessage(true);
+            setLoadingPassword(false);
 
             return false;
         }
@@ -85,14 +95,16 @@ export function Profile() {
         if (res.status !== 200) {
             setMessage(res.data.message);
             setVariant('danger');
-            setShow(true);
+            setShowPasswordMessage(true);
+            setLoadingPassword(false);
 
             return false;
         }
 
         setMessage(res.data.message);
         setVariant('success');
-        setShow(true);
+        setShowPasswordMessage(true);
+        setLoadingPassword(false);
 
         setCurrentPassword('');
         setNewPassword('');
@@ -109,11 +121,11 @@ export function Profile() {
 
                 <main>
                     <Menu />
-                    <Message    message={message} 
-                                variant={variant} 
-                                show={show} 
-                                onClose={() => setShow(false)} 
-                                dismissible />
+                    <Message message={message}
+                        variant={variant}
+                        show={show}
+                        onClose={() => setShow(false)}
+                        dismissible />
 
                     <Form onSubmit={handleUpdateProfile}>
                         <InputComponent
@@ -140,21 +152,39 @@ export function Profile() {
                             placeholder={'Digite Seu Email!'}
                             onChange={onChangeEmail} />
 
-                        <Button className={styles.btnCreateAccount} type="submit" variant='primary'>Atualizar</Button>
+                        <Button className={styles.btnCreateAccount} type="submit" variant='primary'>
+                            {
+                                loadingProfile === true && (
+                                    <Spinner as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        className={styles.Spinner}
+                                        aria-hidden="true" />
+                                )
+                            }
+                            <span>Atualizar</span>
+                        </Button>
                     </Form>
 
                     <Accordion className={styles.accordion}>
+                        <Message message={message}
+                            variant={variant}
+                            show={showPasswordMessage}
+                            onClose={() => setShowPasswordMessage(false)}
+                            dismissible />
+
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Atualizar Senha</Accordion.Header>
                             <Accordion.Body>
                                 <Form onSubmit={handleUpdatePassword}>
                                     <InputComponent
-                                            id={currentPassword}
-                                            name={currentPassword}
-                                            type="password"
-                                            value={currentPassword}
-                                            placeholder={'Digite Sua Senha Atual!'}
-                                            onChange={onChangeCurrentPassword} />
+                                        id={currentPassword}
+                                        name={currentPassword}
+                                        type="password"
+                                        value={currentPassword}
+                                        placeholder={'Digite Sua Senha Atual!'}
+                                        onChange={onChangeCurrentPassword} />
 
                                     <InputComponent
                                         id={newPassword}
@@ -165,14 +195,26 @@ export function Profile() {
                                         onChange={onChangeNewPassword} />
 
                                     <InputComponent
-                                        id={confirmNewPassword}
+                                        id={'confirm' + confirmNewPassword}
                                         name={confirmNewPassword}
                                         type="password"
                                         value={confirmNewPassword}
                                         placeholder={'Confirme Sua Nova Senha!'}
                                         onChange={onChangeConfirmNewPassword} />
 
-                                    <Button className={styles.btnCreateAccount} type="submit" variant='primary'>Atualizar</Button>
+                                    <Button className={styles.btnCreateAccount} type="submit" variant='primary'>
+                                        {
+                                            loadingPassword === true && (
+                                                <Spinner as="span"
+                                                    animation="border"
+                                                    size="sm"
+                                                    role="status"
+                                                    className={styles.Spinner}
+                                                    aria-hidden="true" />
+                                            )
+                                        }
+                                        <span>Atualizar</span>
+                                    </Button>
                                 </Form>
                             </Accordion.Body>
                         </Accordion.Item>

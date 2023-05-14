@@ -125,6 +125,17 @@
     background-color: red;
 }
 
+.waitPage {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    justify-content: center;
+}
+
+.confirmButton .Spinner {
+    margin-right: 0.30rem;
+}
+
 @media (max-width: 768px) {
     .wrapper {
         grid-template-columns: 1fr;

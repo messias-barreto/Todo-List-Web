@@ -1,6 +1,6 @@
 import { PlusCircle } from "@phosphor-icons/react";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Filter } from "../../components/Filter";
 import { InputComponent } from "../../components/forms/InputComponent";
@@ -39,6 +39,9 @@ export function Projects() {
   const [description, setDesctiption] = useState<string>('');
   const [category, setCategory] = useState<string>('selectValue');
 
+  const [loadingProject, setLoadingProject] = useState<boolean>(false);
+  const [loadingAddProject, setLoadingAddProject] = useState<boolean>(false);
+
   const [show, setShow] = useState(false);
   const handleShow = () => {
     setShow(true);
@@ -51,9 +54,11 @@ export function Projects() {
   const [variant, setVariant] = useState<string>('');
 
   const handleProjects = async () => {
+    setLoadingProject(true);
     await getAllProjects().then(res => {
       setProject(res)
       setFilterProject(res)
+      setLoadingProject(false);
     })
   }
 
@@ -63,11 +68,14 @@ export function Projects() {
 
   const onSubmitProject = async (event: FormEvent) => {
     event?.preventDefault();
+    setLoadingAddProject(true);
 
     if (category === 'selectValue') {
       setMessage('Selecione uma Categoria Válida!')
       setVariant('warning');
       setShowMessage(true);
+      setLoadingAddProject(false);
+
       return false;
     }
 
@@ -83,6 +91,7 @@ export function Projects() {
 
     setMessage(data.data.message)
     setShowMessage(true);
+    setLoadingAddProject(false);
   }
 
   function handleChangeName(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -166,26 +175,34 @@ export function Projects() {
         <main>
           <Menu />
           <div className={styles.projects}>
-
             {
-              filterProject.map((pro: IProject) =>
-                <Link to={`/todos/${pro.id}`} key={pro.id}>
-                  <Work
-                    key={pro.id}
-                    name={pro.name}
-                    description={pro.description}
-                    percent={getPercentageProject(pro.qtd_todo, pro.qtd_todo_finish)} />
-                </Link>
+              loadingProject === true ?   <div className={styles.waitPage}>
+                                            <Spinner as="span" animation="border" variant="dark"/>
+                                          </div>
+              : (
+                <>
+                  {
+                    filterProject.map((pro: IProject) => <Link to={`/todos/${pro.id}`} key={pro.id}>
+                                                            <Work key={pro.id}
+                                                                  name={pro.name}
+                                                                  description={pro.description}
+                                                                  percent={getPercentageProject(pro.qtd_todo, pro.qtd_todo_finish)} />
+                                                          </Link>)
+                  }
+                  
+                  <PlusCircle size={250} onClick={handleShow} className={styles.btnAdd} />
+                </>
               )
             }
-
-            <PlusCircle size={250} onClick={handleShow} className={styles.btnAdd} />
           </div>
 
           <ModalComponent show={show} handleClose={handleClose}>
             <ModalHeader title="Adicionar Novo Project!" />
             <ModalBody>
               {
+                loadingProject === true ?  <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>
+                : (
+                  
                 showMessage === true ? <Message message={message}
                                                 show
                                                 variant={variant}
@@ -220,10 +237,23 @@ export function Projects() {
 
                       <Button className={styles.confirmButton}
                         type={'submit'}
-                        variant="primary">Adicionar</Button>
+                        variant="primary">
+                          {
+                            loadingAddProject === true && (
+                              <Spinner  as="span" 
+                                        animation="border" 
+                                        size="sm" 
+                                        role="status" 
+                                        className={styles.Spinner}
+                                        aria-hidden="true"/>
+                            )  
+                          }
+                          <span>Adicionar</span>
+                      </Button>
 
                     </Form>
                   </>
+                )
               }
             </ModalBody>
           </ModalComponent>

@@ -50,11 +50,5 @@ Sistema possui a finalidade de gerenciar Listas de Tarefas de Diversos Projetos 
 - Axios
 - React-Router
 
-## Instalação 
-Após realizar o Clone do Projeto:
-- cd Todo-List-Web
-- Yarn 
-- yarn start
-
 ## Demo 
-http://todolist.barretosdrive.com/
+https://todolist.barretosdrive.com/
