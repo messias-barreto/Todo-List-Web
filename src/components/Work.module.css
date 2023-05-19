@@ -30,6 +30,12 @@
     flex-direction: row;
 }
 
+.worksDescription p {
+    max-height: 6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .worksDescription strong {
     font-size: 0.80rem;
 }

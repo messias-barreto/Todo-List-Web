@@ -21,6 +21,10 @@ import { Message } from "../../components/Message";
 import { EditProjectForm } from "./EditProjectForm";
 import { editProject, getProjectByid } from "../../data/services/projects";
 
+import EmojiFaceOkay from '../../assets/emojis/task-ok.svg';
+import EmojiFaceWork from '../../assets/emojis/task-working.svg';
+import EmokiFaceInProgress from '../../assets/emojis/task-in-progress.svg';
+
 interface ITodo {
     id: string;
     title: string;
@@ -297,6 +301,21 @@ export function Todo() {
 
                     <div className={styles.options}>
                         <strong> {information}</strong>
+
+                        <span className={styles.legends}> 
+                            <p>
+                                <img src={EmokiFaceInProgress} width={22} />
+                                Em Andamento
+                            </p>
+                            <p>
+                                <img src={EmojiFaceWork} width={22} />
+                                Em Aguardo
+                            </p>
+                            <p>
+                                <img src={EmojiFaceOkay} width={22} />
+                                Finalizado
+                            </p>
+                        </span>
 
                         <span>
                             <KeyReturn size={34} onClick={() => navigate(-1)} className={styles.btnReturn} />

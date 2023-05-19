@@ -104,6 +104,17 @@
     align-items: center;
 }
 
+.options .legends {
+    height: 4rem;
+    font-size: 0.7rem;
+    gap: 1rem;
+    margin-top: 0.85rem;
+}
+
+.options .legends img {
+    margin-right: 0.3rem;
+}
+
 .btnReturn {
     cursor: pointer;
     border: 1px solid var(--blue);
